@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import homeRoutes from './home';
-import userRoutes from './user';
-import tokenRoutes from './token';
-import alunoRoutes from './aluno';
-import fotoRoutes from './foto';
+import homeRoutes from "./home";
+import userRoutes from "./user";
+import tokenRoutes from "./token";
+import alunoRoutes from "./aluno";
+import fotoRoutes from "./foto";
 
 const router = new Router();
 

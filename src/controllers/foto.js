@@ -1,8 +1,8 @@
-import multer from 'multer';
-import multerConfig from '../config/multer';
-import Foto from '../models/Foto';
+import multer from "multer";
+import multerConfig from "../config/multer";
+import Foto from "../models/Foto";
 
-const upload = multer(multerConfig).single('photo');
+const upload = multer(multerConfig).single("photo");
 
 const store = (req, res) => {
   upload(req, res, async (err) => {
@@ -21,7 +21,7 @@ const store = (req, res) => {
       res.json(foto);
     } catch (e) {
       res.status(400).json({
-        errors: ['Invalid aluno_id'],
+        errors: ["Invalid aluno_id"],
       });
     }
   });

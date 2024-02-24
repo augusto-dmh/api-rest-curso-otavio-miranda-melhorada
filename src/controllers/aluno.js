@@ -1,13 +1,16 @@
-import Aluno from '../models/Aluno';
-import Foto from '../models/Foto';
+import Aluno from "../models/Aluno";
+import Foto from "../models/Foto";
 
 const index = async (req, res) => {
   const alunos = await Aluno.findAll({
-    attributes: { exclude: ['createdAt', 'updatedAt'] },
-    order: [['id', 'DESC'], [Foto, 'id', 'DESC']],
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+    order: [
+      ["id", "DESC"],
+      [Foto, "id", "DESC"],
+    ],
     include: {
       model: Foto,
-      attributes: ['url', 'filename'],
+      attributes: ["url", "filename"],
     },
   });
   res.json(alunos);
@@ -36,17 +39,20 @@ const show = async (req, res) => {
     }
 
     const aluno = await Aluno.findByPk(id, {
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
-      order: [['id', 'DESC'], [Foto, 'id', 'DESC']],
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      order: [
+        ["id", "DESC"],
+        [Foto, "id", "DESC"],
+      ],
       include: {
         model: Foto,
-        attributes: ['url', 'filename'],
+        attributes: ["url", "filename"],
       },
     });
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ['Aluno not found'],
+        errors: ["Aluno not found"],
       });
     }
 
@@ -72,12 +78,12 @@ const destroy = async (req, res) => {
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ['Aluno not found'],
+        errors: ["Aluno not found"],
       });
     }
 
     await aluno.destroy();
-    res.json('Aluno successfully deleted');
+    res.json("Aluno successfully deleted");
   } catch (e) {
     res.status(400).json({
       errors: e.errors.map((err) => err.message),
@@ -99,7 +105,7 @@ const update = async (req, res) => {
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ['Aluno not found'],
+        errors: ["Aluno not found"],
       });
     }
 

@@ -1,75 +1,78 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from "sequelize";
 
 export default class Aluno extends Model {
   static init(sequelize) {
-    super.init({
-      nome: {
-        type: DataTypes.STRING,
-        defaultValue: '',
-        validate: {
-          len: {
-            args: [3, 255],
-            msg: 'Name must be between 3 and 255 characters',
+    super.init(
+      {
+        nome: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+          validate: {
+            len: {
+              args: [3, 255],
+              msg: "Name must be between 3 and 255 characters",
+            },
+          },
+        },
+        sobrenome: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+          validate: {
+            len: {
+              args: [3, 255],
+              msg: "Surname must be between 3 and 255 characters",
+            },
+          },
+        },
+        email: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+          unique: {
+            msg: "Email already in use",
+          },
+          validate: {
+            isEmail: {
+              msg: "Invalid email address",
+            },
+          },
+        },
+        idade: {
+          type: DataTypes.INTEGER,
+          defaultValue: "",
+          validate: {
+            isInt: {
+              msg: "Age must be an integer number",
+            },
+          },
+        },
+        peso: {
+          type: DataTypes.FLOAT,
+          defaultValue: "",
+          validate: {
+            isFloat: {
+              msg: "Weight must be a number",
+            },
+          },
+        },
+        altura: {
+          type: DataTypes.FLOAT,
+          defaultValue: "",
+          validate: {
+            isFloat: {
+              msg: "Height must be a number",
+            },
           },
         },
       },
-      sobrenome: {
-        type: DataTypes.STRING,
-        defaultValue: '',
-        validate: {
-          len: {
-            args: [3, 255],
-            msg: 'Surname must be between 3 and 255 characters',
-          },
-        },
+      {
+        sequelize,
       },
-      email: {
-        type: DataTypes.STRING,
-        defaultValue: '',
-        unique: {
-          msg: 'Email already in use',
-        },
-        validate: {
-          isEmail: {
-            msg: 'Invalid email address',
-          },
-        },
-      },
-      idade: {
-        type: DataTypes.INTEGER,
-        defaultValue: '',
-        validate: {
-          isInt: {
-            msg: 'Age must be an integer number',
-          },
-        },
-      },
-      peso: {
-        type: DataTypes.FLOAT,
-        defaultValue: '',
-        validate: {
-          isFloat: {
-            msg: 'Weight must be a number',
-          },
-        },
-      },
-      altura: {
-        type: DataTypes.FLOAT,
-        defaultValue: '',
-        validate: {
-          isFloat: {
-            msg: 'Height must be a number',
-          },
-        },
-      },
-    }, {
-      sequelize,
-    });
+    );
     return this;
   }
 
   static associate(models) {
-    this.hasMany(models.Foto, { foreignKey: 'aluno_id' });
+    this.hasMany(models.Foto, { foreignKey: "aluno_id" });
   }
 }
 

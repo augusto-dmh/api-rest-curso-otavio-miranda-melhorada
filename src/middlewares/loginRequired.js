@@ -1,16 +1,16 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import jwt from "jsonwebtoken";
+import User from "../models/User";
 
 export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
     return res.status(401).json({
-      errors: ['Authentication Error'],
+      errors: ["Authentication Error"],
     });
   }
 
-  const [, token] = authorization.split(' ');
+  const [, token] = authorization.split(" ");
 
   try {
     const data = jwt.verify(token, process.env.TOKEN_SECRET);
@@ -20,7 +20,7 @@ export default async (req, res, next) => {
 
     if (!user) {
       return res.status(401).json({
-        errors: ['Authentication Error'],
+        errors: ["Authentication Error"],
       });
     }
 
@@ -30,7 +30,7 @@ export default async (req, res, next) => {
     return next();
   } catch (e) {
     res.status(401).json({
-      errors: ['Authentication Error'],
+      errors: ["Authentication Error"],
     });
   }
 };

@@ -1,13 +1,13 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import User from '../models/User';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import User from "../models/User";
 
 const store = async (req, res) => {
-  const { email = '', password = '' } = req.body;
+  const { email = "", password = "" } = req.body;
 
   if (!email || !password) {
     return res.status(401).json({
-      errors: ['Missing credentials'],
+      errors: ["Missing credentials"],
     });
   }
 
@@ -15,7 +15,7 @@ const store = async (req, res) => {
 
   if (!user) {
     return res.status(401).json({
-      errors: ['Invalid credentials'],
+      errors: ["Invalid credentials"],
     });
   }
   // it would be more accurate to inform "Invalid credentials" on both, suggesting that at least one field is preventing the login,
@@ -26,7 +26,7 @@ const store = async (req, res) => {
 
   if (!passwordsMatch) {
     return res.status(400).json({
-      errors: ['Invalid password'],
+      errors: ["Invalid password"],
     });
   }
 
