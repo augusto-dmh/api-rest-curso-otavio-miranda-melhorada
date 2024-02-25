@@ -1,5 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import appConfig from "../config/appConfig";
+import * as validations from "../validation/validations";
+import * as errors from "../validation/errors";
 
 export default class Foto extends Model {
   static init(sequelize) {
@@ -9,9 +11,10 @@ export default class Foto extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
-            notEmpty: {
-              args: [3, 255],
-              msg: "This field is required",
+            empty(value) {
+              if (!validations.isNotEmpty(value)) {
+                throw new Error(errors.originalnameEmpty);
+              }
             },
           },
         },
@@ -19,9 +22,10 @@ export default class Foto extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
-            notEmpty: {
-              args: [3, 255],
-              msg: "This field is required",
+            empty(value) {
+              if (!validations.isNotEmpty(value)) {
+                throw new Error(errors.filenameEmpty);
+              }
             },
           },
         },

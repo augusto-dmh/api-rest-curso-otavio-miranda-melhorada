@@ -1,4 +1,6 @@
 import { Model, DataTypes } from "sequelize";
+import * as validations from "../validation/validations";
+import * as errors from "../validation/errors";
 
 export default class Aluno extends Model {
   static init(sequelize) {
@@ -8,9 +10,10 @@ export default class Aluno extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
-            len: {
-              args: [3, 255],
-              msg: "Name must be between 3 and 255 characters",
+            length(value) {
+              if (!validations.isLengthValid(value, 2, 255)) {
+                throw new Error(errors.nameLength);
+              }
             },
           },
         },
@@ -18,21 +21,22 @@ export default class Aluno extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
-            len: {
-              args: [3, 255],
-              msg: "Surname must be between 3 and 255 characters",
+            length(value) {
+              if (!validations.isLengthValid(value, 2, 255)) {
+                throw new Error(errors.nameLength);
+              }
             },
           },
         },
         email: {
           type: DataTypes.STRING,
           defaultValue: "",
-          unique: {
-            msg: "Email already in use",
-          },
+          unique: true,
           validate: {
-            isEmail: {
-              msg: "Invalid email address",
+            email(value) {
+              if (!validations.isEmailValid(value)) {
+                throw new Error(errors.emailValidity);
+              }
             },
           },
         },
@@ -40,8 +44,10 @@ export default class Aluno extends Model {
           type: DataTypes.INTEGER,
           defaultValue: "",
           validate: {
-            isInt: {
-              msg: "Age must be an integer number",
+            nonInteger(value) {
+              if (!validations.isInteger(value)) {
+                throw new Error(errors.ageNonInteger);
+              }
             },
           },
         },
@@ -49,8 +55,10 @@ export default class Aluno extends Model {
           type: DataTypes.FLOAT,
           defaultValue: "",
           validate: {
-            isFloat: {
-              msg: "Weight must be a number",
+            nonFloat(value) {
+              if (!validations.isNumber(value)) {
+                throw new Error(errors.heightNonFloat);
+              }
             },
           },
         },
@@ -58,8 +66,10 @@ export default class Aluno extends Model {
           type: DataTypes.FLOAT,
           defaultValue: "",
           validate: {
-            isFloat: {
-              msg: "Height must be a number",
+            email(value) {
+              if (!validations.isNumber(value)) {
+                throw new Error(errors.heightNonFloat);
+              }
             },
           },
         },
