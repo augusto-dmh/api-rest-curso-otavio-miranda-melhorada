@@ -1,37 +1,19 @@
 // Listed errors from Sequelize and controllers
 
-const invalidName = "Name must be between 3 and 255 characters.";
-const invalidLastName = "Last name must be between 3 and 255 characters.";
-const invalidEmail = "Invalid email address.";
-const emailInUse = "Email already in use.";
-const ageNonInteger = "Age must be an integer.";
-const heightNonFloat = "Height must be a floating point number.";
-const originalnameIsRequired = "Originalname is required.";
-const filenameIsRequired = "Filename is required."; // Corrected "Originalname is required." to "Filename is required."
-const missingIdParameter = "Missing 'id' parameter.";
-const alunoNotFound = "Aluno not found.";
-const invalidAlunoid = "Invalid alunoId.";
-const missingCredentials = "Missing credentials.";
-const invalidCredentials = "Invalid credentials.";
-const invalidPassword = "Invalid password.";
-const userNotFound = "User not found.";
-const passwordHashNotUpdatable = "The field passwordHash can't be updated.";
-
-export {
-  invalidName,
-  invalidLastName,
-  invalidEmail,
-  emailInUse,
-  ageNonInteger,
-  heightNonFloat,
-  originalnameIsRequired,
-  filenameIsRequired,
-  missingIdParameter,
-  alunoNotFound,
-  invalidAlunoid,
-  missingCredentials,
-  invalidCredentials,
-  invalidPassword,
-  userNotFound,
-  passwordHashNotUpdatable,
-};
+export const nameLength = "Name must be between 3 and 255 characters.";
+export const lastNameLength = "Last name must be between 3 and 255 characters.";
+export const emailValidity = "Invalid email address.";
+export const emailInUse = "Email already in use.";
+export const ageNonInteger = "Age must be an integer.";
+export const heightNonFloat = "Height must be a floating point number.";
+export const originalnameEmpty = "Originalname is required.";
+export const filenameEmpty = "Filename is required."; // Corrected "Originalname is required." to "Filename is required."
+export const missingId = "Missing 'id' parameter.";
+export const alunoNotFound = "Aluno not found.";
+export const alunoId = "aluno_id does not refer to any aluno's id.";
+export const missingCredentials = "Missing credentials.";
+export const invalidCredentials = "Invalid credentials.";
+export const passwordLength = "Password must be between 6 and 50 characters.";
+export const passwordsNotMatch = "Invalid password.";
+export const userNotFound = "User not found.";
+export const passwordHashUpdate = "The field passwordHash can't be updated.";
