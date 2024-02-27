@@ -2,18 +2,25 @@ import Aluno from "../models/Aluno";
 import Foto from "../models/Foto";
 
 const index = async (req, res) => {
-  const alunos = await Aluno.findAll({
-    attributes: { exclude: ["createdAt", "updatedAt"] },
-    order: [
-      ["id", "DESC"],
-      [Foto, "id", "DESC"],
-    ],
-    include: {
-      model: Foto,
-      attributes: ["url", "filename"],
-    },
-  });
-  res.json(alunos);
+  try {
+    const alunos = await Aluno.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      order: [
+        ["id", "DESC"],
+        [Foto, "id", "DESC"],
+      ],
+      include: {
+        model: Foto,
+        attributes: ["url", "filename"],
+      },
+    });
+
+    res.json(alunos);
+  } catch (err) {
+    res.status(500).json({
+      errors: ["An unexpected error ocurred. Please try again later."],
+    });
+  }
 };
 
 const store = async (req, res) => {
