@@ -30,10 +30,16 @@ export const ageNonInteger = new BaseError(
   "'age' must be an integer.",
 );
 
-export const heightNonInteger = new BaseError(
-  "/errors/height-non-integer",
-  "Height Non Integer",
-  "'height' must be an integer.",
+export const weightNonFloat = new BaseError(
+  "/errors/weight-non-float",
+  "Weight Non Float",
+  "'Weight' must be an float.",
+);
+
+export const heightNonFloat = new BaseError(
+  "/errors/height-non-float",
+  "Height Non Float",
+  "'height' must be an float.",
 );
 
 export const originalnameEmpty = new BaseError(
@@ -44,6 +50,12 @@ export const originalnameEmpty = new BaseError(
 
 export const filenameEmpty = new BaseError(
   "/errors/filenameEmpty-empty",
-  "FilenameEmpty Emtpy",
+  "Filename Emtpy",
   "'filename' is required.",
+);
+
+export const passwordLength = new BaseError(
+  "/errors/password-invalid-length",
+  "Invalid Password Length",
+  "Password must be between 6 and 50 characters.",
 );

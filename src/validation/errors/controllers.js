@@ -35,13 +35,6 @@ export const invalidCredentialsError = new ApiError(
   "'email' or/and 'password' invalid",
 );
 
-export const passwordLengthError = new ApiError(
-  "/errors/password-invalid-length",
-  400,
-  "Invalid Password Length",
-  "Password must be between 6 and 50 characters.",
-);
-
 export const passwordsNotMatchError = new ApiError(
   "/errors/passwords-not-match",
   400,
