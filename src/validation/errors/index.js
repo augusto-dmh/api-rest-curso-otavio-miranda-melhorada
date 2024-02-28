@@ -1,5 +1,2 @@
-import * as controllers from "./controllers";
-import * as models from "./models";
-
-export default { controllers, models };
-// errors.controllers or errors.models
+export * as controllers from "./controllers";
+export * as models from "./models";
