@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import * as validations from "../validation/validations";
+import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
 export default class Aluno extends Model {
@@ -12,7 +12,7 @@ export default class Aluno extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 2, 255)) {
-                throw new Error(errors.nameLength);
+                throw errors.models.nameLength;
               }
             },
           },
@@ -23,7 +23,7 @@ export default class Aluno extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 2, 255)) {
-                throw new Error(errors.nameLength);
+                throw new Error(errors.models.lastNameLength);
               }
             },
           },
@@ -31,11 +31,13 @@ export default class Aluno extends Model {
         email: {
           type: DataTypes.STRING,
           defaultValue: "",
-          unique: true,
+          unique: {
+            msg: errors.models.emailInUse.message,
+          },
           validate: {
             email(value) {
               if (!validations.isEmailValid(value)) {
-                throw new Error(errors.emailValidity);
+                throw new Error(errors.models.emailValidity);
               }
             },
           },
@@ -46,7 +48,7 @@ export default class Aluno extends Model {
           validate: {
             nonInteger(value) {
               if (!validations.isInteger(value)) {
-                throw new Error(errors.ageNonInteger);
+                throw new Error(errors.models.ageNonInteger);
               }
             },
           },
@@ -57,7 +59,7 @@ export default class Aluno extends Model {
           validate: {
             nonFloat(value) {
               if (!validations.isNumber(value)) {
-                throw new Error(errors.heightNonFloat);
+                throw new Error(errors.models.weightNonFloat);
               }
             },
           },
@@ -68,7 +70,7 @@ export default class Aluno extends Model {
           validate: {
             email(value) {
               if (!validations.isNumber(value)) {
-                throw new Error(errors.heightNonFloat);
+                throw new Error(errors.models.heightNonFloat);
               }
             },
           },

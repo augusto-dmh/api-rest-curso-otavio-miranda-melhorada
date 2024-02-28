@@ -1,6 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import bcryptjs from "bcryptjs";
-import * as validations from "../validation/validations";
+import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
 export default class User extends Model {
@@ -13,7 +13,7 @@ export default class User extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 2, 255)) {
-                throw new Error(errors.nameLength);
+                throw new Error(errors.models.nameLength);
               }
             },
           },
@@ -25,7 +25,7 @@ export default class User extends Model {
           validate: {
             email(value) {
               if (!validations.isEmailValid(value)) {
-                throw new Error(errors.emailValidity);
+                throw new Error(errors.models.emailValidity);
               }
             },
           },
@@ -40,7 +40,7 @@ export default class User extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 6, 60)) {
-                throw new Error(errors.passwordLength);
+                throw new Error(errors.models.passwordLength);
               }
             },
           },

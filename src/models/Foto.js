@@ -1,6 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import appConfig from "../config/appConfig";
-import * as validations from "../validation/validations";
+import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
 export default class Foto extends Model {
@@ -13,7 +13,7 @@ export default class Foto extends Model {
           validate: {
             empty(value) {
               if (!validations.isNotEmpty(value)) {
-                throw new Error(errors.originalnameEmpty);
+                throw new Error(errors.models.originalnameEmpty);
               }
             },
           },
@@ -24,7 +24,7 @@ export default class Foto extends Model {
           validate: {
             empty(value) {
               if (!validations.isNotEmpty(value)) {
-                throw new Error(errors.filenameEmpty);
+                throw new Error(errors.models.filenameEmpty);
               }
             },
           },
