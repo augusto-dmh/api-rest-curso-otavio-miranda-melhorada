@@ -1,5 +1,12 @@
 import ApiError from "./classes/ApiError";
 
+export const validationError = new ApiError(
+  "/errors/validation-error",
+  400,
+  "Validation Error",
+  "One or more validation errors occurred.",
+);
+
 export const missingId = new ApiError(
   "/errors/id-param-missing",
   400,
