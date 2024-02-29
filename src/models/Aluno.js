@@ -11,7 +11,7 @@ export default class Aluno extends Model {
           defaultValue: "",
           validate: {
             length(value) {
-              if (!validations.isLengthValid(value, 2, 255)) {
+              if (!validations.isLengthValid(value, 3, 255)) {
                 throw errors.models.nameLength;
               }
             },
@@ -22,6 +22,8 @@ export default class Aluno extends Model {
           defaultValue: "",
           validate: {
             length(value) {
+              if (!validations.isLengthValid(value, 3, 255)) {
+                throw errors.models.nameLength;
               }
             },
           },
