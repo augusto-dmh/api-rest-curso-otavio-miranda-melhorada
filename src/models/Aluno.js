@@ -22,8 +22,6 @@ export default class Aluno extends Model {
           defaultValue: "",
           validate: {
             length(value) {
-              if (!validations.isLengthValid(value, 2, 255)) {
-                throw new Error(errors.models.lastNameLength);
               }
             },
           },
@@ -37,7 +35,7 @@ export default class Aluno extends Model {
           validate: {
             email(value) {
               if (!validations.isEmailValid(value)) {
-                throw new Error(errors.models.emailValidity);
+                throw errors.models.emailValidity;
               }
             },
           },
@@ -48,7 +46,7 @@ export default class Aluno extends Model {
           validate: {
             nonInteger(value) {
               if (!validations.isInteger(value)) {
-                throw new Error(errors.models.ageNonInteger);
+                throw errors.models.ageNonInteger;
               }
             },
           },
@@ -59,7 +57,7 @@ export default class Aluno extends Model {
           validate: {
             nonFloat(value) {
               if (!validations.isNumber(value)) {
-                throw new Error(errors.models.weightNonFloat);
+                throw errors.models.weightNonFloat;
               }
             },
           },
@@ -70,7 +68,7 @@ export default class Aluno extends Model {
           validate: {
             email(value) {
               if (!validations.isNumber(value)) {
-                throw new Error(errors.models.heightNonFloat);
+                throw errors.models.heightNonFloat;
               }
             },
           },

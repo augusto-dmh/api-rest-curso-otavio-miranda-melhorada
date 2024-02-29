@@ -21,35 +21,35 @@ export const alunoId = new ApiError(
   "'aluno_id' does not refer to any aluno's id.",
 );
 
-export const missingCredentialsError = new ApiError(
+export const missingCredentials = new ApiError(
   "/errors/missing-credentials",
   400,
   "Missing Credentials",
   "'email' and 'password' are required.",
 );
 
-export const invalidCredentialsError = new ApiError(
+export const invalidCredentials = new ApiError(
   "/errors/invalid-credentials",
   400,
   "Invalid Credentials",
   "'email' or/and 'password' invalid",
 );
 
-export const passwordsNotMatchError = new ApiError(
+export const passwordsNotMatch = new ApiError(
   "/errors/passwords-not-match",
   400,
   "Passwords Not Match",
   "Invalid password.",
 );
 
-export const userNotFoundError = new ApiError(
+export const userNotFound = new ApiError(
   "/errors/user-not-found",
   404,
   "User Not Found",
   "User not found.",
 );
 
-export const passwordHashUpdateError = new ApiError(
+export const passwordHashUpdate = new ApiError(
   "/errors/passwordHash-update-forbidden",
   403,
   "PasswordHash Update Forbidden",

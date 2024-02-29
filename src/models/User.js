@@ -13,7 +13,7 @@ export default class User extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 2, 255)) {
-                throw new Error(errors.models.nameLength);
+                throw errors.models.nameLength;
               }
             },
           },
@@ -25,7 +25,7 @@ export default class User extends Model {
           validate: {
             email(value) {
               if (!validations.isEmailValid(value)) {
-                throw new Error(errors.models.emailValidity);
+                throw errors.models.emailValidity;
               }
             },
           },
@@ -40,7 +40,7 @@ export default class User extends Model {
           validate: {
             length(value) {
               if (!validations.isLengthValid(value, 6, 60)) {
-                throw new Error(errors.models.passwordLength);
+                throw errors.models.passwordLength;
               }
             },
           },
