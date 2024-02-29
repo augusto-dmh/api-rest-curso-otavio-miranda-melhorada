@@ -1,3 +1,5 @@
+import { ValidationError } from "sequelize";
+import * as errors from "../validation/errors";
 import Aluno from "../models/Aluno";
 import Foto from "../models/Foto";
 
@@ -18,7 +20,7 @@ const index = async (req, res) => {
     res.json(alunos);
   } catch (err) {
     res.status(500).json({
-      errors: ["An unexpected error ocurred. Please try again later."],
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -29,8 +31,18 @@ const store = async (req, res) => {
 
     res.json(aluno);
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    if (e instanceof ValidationError) {
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = e.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -41,7 +53,7 @@ const show = async (req, res) => {
 
     if (!id) {
       return res.status(400).json({
-        errors: ["Missing 'id' parameter"],
+        errors: errors.controllers.missingId,
       });
     }
 
@@ -59,14 +71,24 @@ const show = async (req, res) => {
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ["Aluno not found"],
+        errors: errors.controllers.alunoNotFound,
       });
     }
 
     res.json(aluno);
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    if (e instanceof ValidationError) {
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = e.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -77,7 +99,7 @@ const destroy = async (req, res) => {
 
     if (!id) {
       return res.status(400).json({
-        errors: ["Missing 'id' parameter"],
+        errors: errors.controllers.missingId,
       });
     }
 
@@ -85,15 +107,15 @@ const destroy = async (req, res) => {
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ["Aluno not found"],
+        errors: errors.controllers.alunoNotFound,
       });
     }
 
     await aluno.destroy();
     res.json("Aluno successfully deleted");
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -104,7 +126,7 @@ const update = async (req, res) => {
 
     if (!id) {
       return res.status(400).json({
-        errors: ["Missing 'id' parameter"],
+        errors: errors.controllers.missingId,
       });
     }
 
@@ -112,7 +134,7 @@ const update = async (req, res) => {
 
     if (!aluno) {
       return res.status(404).json({
-        errors: ["Aluno not found"],
+        errors: errors.controllers.alunoNotFound,
       });
     }
 
@@ -120,8 +142,18 @@ const update = async (req, res) => {
 
     res.json(newAluno);
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    if (e instanceof ValidationError) {
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = e.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };

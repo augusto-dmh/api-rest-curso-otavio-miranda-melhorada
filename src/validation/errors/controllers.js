@@ -7,6 +7,13 @@ export const validationError = new ApiError(
   "One or more validation errors occurred.",
 );
 
+export const internalServerError = new ApiError(
+  "/errors/internal-server-error",
+  500,
+  "Internal Server Error",
+  "An unexpected error occurred. Please try again later.",
+);
+
 export const missingId = new ApiError(
   "/errors/id-param-missing",
   400,
@@ -61,4 +68,11 @@ export const passwordHashUpdate = new ApiError(
   403,
   "PasswordHash Update Forbidden",
   "The field passwordHash can't be updated.",
+);
+
+export const invalidFotoType = new ApiError(
+  "/errors/foto-invalid-type",
+  415,
+  "Invalid File Type",
+  "File must be of type PNG or JPG",
 );

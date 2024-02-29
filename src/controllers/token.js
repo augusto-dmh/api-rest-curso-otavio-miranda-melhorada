@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { ValidationError } from "sequelize";
+import * as errors from "../validation/errors";
 import User from "../models/User";
 
 const store = async (req, res) => {
@@ -7,7 +9,7 @@ const store = async (req, res) => {
 
   if (!email || !password) {
     return res.status(401).json({
-      errors: ["Missing credentials"],
+      errors: errors.controllers.missingCredentials,
     });
   }
 
@@ -16,7 +18,7 @@ const store = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({
-        errors: ["Invalid credentials"],
+        errors: errors.controllers.invalidCredentials,
       });
     }
     // it would be more accurate to inform "Invalid credentials" on both, suggesting that at least one field is preventing the login,
@@ -27,7 +29,7 @@ const store = async (req, res) => {
 
     if (!passwordsMatch) {
       return res.status(400).json({
-        errors: ["Invalid password"],
+        errors: errors.controllers.passwordsNotMatch,
       });
     }
 
@@ -38,8 +40,19 @@ const store = async (req, res) => {
 
     res.json({ token, user: { nome: user.nome, id, email } });
   } catch (err) {
+    if (err instanceof ValidationError) {
+      console.log(err);
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = err.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
     res.status(500).json({
-      errors: ["An unexpected error ocurred. Please try again later."],
+      error: errors.controllers.internalServerError,
     });
   }
 };

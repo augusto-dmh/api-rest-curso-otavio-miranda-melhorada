@@ -1,4 +1,6 @@
+import { ValidationError } from "sequelize";
 import User from "../models/User";
+import * as errors from "../validation/errors";
 
 const store = async (req, res) => {
   try {
@@ -6,8 +8,18 @@ const store = async (req, res) => {
     const { id, nome, email } = newUser;
     res.json({ id, nome, email });
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    if (e instanceof ValidationError) {
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = e.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -17,7 +29,9 @@ const index = async (req, res) => {
     const users = await User.findAll({ attributes: ["id", "nome", "email"] });
     res.json(users);
   } catch (e) {
-    res.json(null);
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
+    });
   }
 };
 
@@ -29,7 +43,9 @@ const show = async (req, res) => {
     const { nome, email } = user;
     res.json({ id, nome, email });
   } catch (e) {
-    res.json(null);
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
+    });
   }
 };
 
@@ -40,13 +56,13 @@ const update = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        errors: ["User not found"],
+        errors: errors.controllers.userNotFound,
       });
     }
 
     if (req.body.password_hash) {
       return res.status(404).json({
-        errors: ["The field 'password_hash' can't be updated"],
+        errors: errors.controllers.passwordHashUpdate,
       });
     }
 
@@ -55,8 +71,18 @@ const update = async (req, res) => {
 
     res.json({ id, nome, email });
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    if (e instanceof ValidationError) {
+      const apiError = errors.controllers.validationError;
+      apiError.subErrors = e.errors.map((error) => error.message);
+
+      res.status(400).json({
+        error: apiError,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };
@@ -68,15 +94,15 @@ const destroy = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        errors: ["User not found"],
+        errors: errors.controllers.userNotFound,
       });
     }
 
     await user.destroy();
     res.json(null);
   } catch (e) {
-    res.status(400).json({
-      errors: e.errors.map((err) => err.message),
+    res.status(500).json({
+      error: errors.controllers.internalServerError,
     });
   }
 };

@@ -1,4 +1,6 @@
 import multer from "multer";
+import { ValidationError } from "sequelize";
+import * as errors from "../validation/errors";
 import multerConfig from "../config/multer";
 import Foto from "../models/Foto";
 
@@ -8,7 +10,7 @@ const store = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({
-        errors: [err.code],
+        errors: errors.controllers.invalidFotoType,
       });
     }
 
@@ -20,8 +22,19 @@ const store = (req, res) => {
 
       res.json(foto);
     } catch (e) {
-      res.status(400).json({
-        errors: ["Invalid aluno_id"],
+      if (e instanceof ValidationError) {
+        console.log(e);
+        const apiError = errors.controllers.validationError;
+        apiError.subErrors = e.errors.map((error) => error.message);
+
+        res.status(400).json({
+          error: apiError,
+        });
+        return;
+      }
+
+      res.status(500).json({
+        error: errors.controllers.internalServerError,
       });
     }
   });
