@@ -9,13 +9,11 @@ export default class User extends Model {
       {
         nome: {
           type: DataTypes.STRING,
+          defaultValue: "",
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.nameEmpty;
-              }
-              if (!validations.isNotNull(value)) {
-                throw errors.models.nameNull;
               }
               if (!validations.isLengthValid(value, 2, 255)) {
                 throw errors.models.nameLength;
@@ -25,14 +23,12 @@ export default class User extends Model {
         },
         email: {
           type: DataTypes.STRING,
+          defaultValue: "",
           unique: { msg: "Email already in use." },
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.emailEmpty;
-              }
-              if (!validations.isNotNull(value)) {
-                throw errors.models.emailNull;
               }
               if (!validations.isEmailValid(value)) {
                 throw errors.models.emailValidity;
@@ -45,13 +41,11 @@ export default class User extends Model {
         },
         password: {
           type: DataTypes.VIRTUAL,
+          defaultValue: "",
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.passwordEmpty;
-              }
-              if (!validations.isNotNull(value)) {
-                throw errors.models.passwordNull;
               }
               if (!validations.isLengthValid(value, 6, 60)) {
                 throw errors.models.passwordLength;

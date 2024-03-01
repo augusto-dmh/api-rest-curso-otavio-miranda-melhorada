@@ -6,12 +6,6 @@ export const nameLength = new BaseError(
   "'name' must be between 3 and 255 characters.",
 );
 
-export const nameNull = new BaseError(
-  "/errors/name-null",
-  "Name is Null",
-  "'name' is required.",
-);
-
 export const nameEmpty = new BaseError(
   "/errors/name-empty",
   "Name is Empty",
@@ -22,12 +16,6 @@ export const lastNameLength = new BaseError(
   "/errors/lastName-invalid-length",
   "Invalid Last Name Length",
   "'last name' must be between 3 and 255 characters.",
-);
-
-export const lastNameNull = new BaseError(
-  "/errors/lastName-null",
-  "Last Name is Required",
-  "'lastName' is required.",
 );
 
 export const lastNameEmpty = new BaseError(
@@ -48,12 +36,6 @@ export const emailInUse = new BaseError(
   "Email already in use. Please try another",
 );
 
-export const emailNull = new BaseError(
-  "/errors/email-null",
-  "Email is Required",
-  "'email' is required.",
-);
-
 export const emailEmpty = new BaseError(
   "/errors/email-empty",
   "Email is Empty",
@@ -64,12 +46,6 @@ export const ageNonInteger = new BaseError(
   "/errors/age-non-integer",
   "Age Non Integer",
   "'age' must be an integer.",
-);
-
-export const ageNull = new BaseError(
-  "/errors/age-null",
-  "Age is Required",
-  "'age' is required.",
 );
 
 export const ageEmpty = new BaseError(
@@ -84,12 +60,6 @@ export const weightNonFloat = new BaseError(
   "'Weight' must be an float.",
 );
 
-export const weightNull = new BaseError(
-  "/errors/weight-null",
-  "Weight is Required",
-  "'weight' is required.",
-);
-
 export const weightEmpty = new BaseError(
   "/errors/weight-empty",
   "Weight is Empty",
@@ -100,12 +70,6 @@ export const heightNonFloat = new BaseError(
   "/errors/height-non-float",
   "Height Non Float",
   "'height' must be an float.",
-);
-
-export const heightNull = new BaseError(
-  "/errors/height-null",
-  "Height is Required",
-  "'height' is required.",
 );
 
 export const heightEmpty = new BaseError(
@@ -120,21 +84,9 @@ export const originalnameEmpty = new BaseError(
   "'originalname' is required.",
 );
 
-export const originalnameNull = new BaseError(
-  "/errors/originalname-null",
-  "Originalname is Null",
-  "'originalname' is required.",
-);
-
 export const filenameEmpty = new BaseError(
   "/errors/filenameEmpty-empty",
   "Filename Empty",
-  "'filename' is required.",
-);
-
-export const filenameNull = new BaseError(
-  "/errors/filename-null",
-  "Filename is Required",
   "'filename' is required.",
 );
 
@@ -147,11 +99,5 @@ export const passwordLength = new BaseError(
 export const passwordEmpty = new BaseError(
   "/errors/password-empty",
   "Password is Empty",
-  "'password' is required.",
-);
-
-export const passwordNull = new BaseError(
-  "/errors/password-null",
-  "Password is Null",
   "'password' is required.",
 );

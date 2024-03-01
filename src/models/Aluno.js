@@ -8,11 +8,9 @@ export default class Aluno extends Model {
       {
         nome: {
           type: DataTypes.STRING,
+          defaultValue: "",
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.nameNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.nameEmpty;
               }
@@ -24,11 +22,9 @@ export default class Aluno extends Model {
         },
         sobrenome: {
           type: DataTypes.STRING,
+          defaultValue: "",
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.lastNameNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.lastNameEmpty;
               }
@@ -40,14 +36,12 @@ export default class Aluno extends Model {
         },
         email: {
           type: DataTypes.STRING,
+          defaultValue: "",
           unique: {
             msg: errors.models.emailInUse.message,
           },
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.emailNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.emailEmpty;
               }
@@ -59,11 +53,9 @@ export default class Aluno extends Model {
         },
         idade: {
           type: DataTypes.INTEGER,
+          defaultValue: "",
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.ageNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.ageEmpty;
               }
@@ -75,11 +67,9 @@ export default class Aluno extends Model {
         },
         peso: {
           type: DataTypes.FLOAT,
+          defaultValue: "",
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.weightNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.weightEmpty;
               }
@@ -91,11 +81,9 @@ export default class Aluno extends Model {
         },
         altura: {
           type: DataTypes.FLOAT,
+          defaultValue: "",
           validate: {
             custom(value) {
-              if (!validations.isNotNull(value)) {
-                throw errors.models.heightNull;
-              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.heightEmpty;
               }
