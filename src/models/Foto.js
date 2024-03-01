@@ -9,9 +9,11 @@ export default class Foto extends Model {
       {
         originalname: {
           type: DataTypes.STRING,
-          defaultValue: "",
           validate: {
-            empty(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.originalnameNull;
+              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.originalnameEmpty;
               }
@@ -20,9 +22,11 @@ export default class Foto extends Model {
         },
         filename: {
           type: DataTypes.STRING,
-          defaultValue: "",
           validate: {
-            empty(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.filenameNull;
+              }
               if (!validations.isNotEmpty(value)) {
                 throw errors.models.filenameEmpty;
               }

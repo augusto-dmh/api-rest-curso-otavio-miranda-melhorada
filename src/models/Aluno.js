@@ -8,9 +8,14 @@ export default class Aluno extends Model {
       {
         nome: {
           type: DataTypes.STRING,
-          defaultValue: "",
           validate: {
-            length(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.nameNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.nameEmpty;
+              }
               if (!validations.isLengthValid(value, 3, 255)) {
                 throw errors.models.nameLength;
               }
@@ -19,23 +24,33 @@ export default class Aluno extends Model {
         },
         sobrenome: {
           type: DataTypes.STRING,
-          defaultValue: "",
           validate: {
-            length(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.lastNameNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.lastNameEmpty;
+              }
               if (!validations.isLengthValid(value, 3, 255)) {
-                throw errors.models.nameLength;
+                throw errors.models.lastNameLength;
               }
             },
           },
         },
         email: {
           type: DataTypes.STRING,
-          defaultValue: "",
           unique: {
             msg: errors.models.emailInUse.message,
           },
           validate: {
-            email(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.emailNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.emailEmpty;
+              }
               if (!validations.isEmailValid(value)) {
                 throw errors.models.emailValidity;
               }
@@ -44,9 +59,14 @@ export default class Aluno extends Model {
         },
         idade: {
           type: DataTypes.INTEGER,
-          defaultValue: "",
           validate: {
-            nonInteger(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.ageNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.ageEmpty;
+              }
               if (!validations.isInteger(value)) {
                 throw errors.models.ageNonInteger;
               }
@@ -55,9 +75,14 @@ export default class Aluno extends Model {
         },
         peso: {
           type: DataTypes.FLOAT,
-          defaultValue: "",
           validate: {
-            nonFloat(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.weightNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.weightEmpty;
+              }
               if (!validations.isNumber(value)) {
                 throw errors.models.weightNonFloat;
               }
@@ -66,9 +91,14 @@ export default class Aluno extends Model {
         },
         altura: {
           type: DataTypes.FLOAT,
-          defaultValue: "",
           validate: {
-            email(value) {
+            custom(value) {
+              if (!validations.isNotNull(value)) {
+                throw errors.models.heightNull;
+              }
+              if (!validations.isNotEmpty(value)) {
+                throw errors.models.heightEmpty;
+              }
               if (!validations.isNumber(value)) {
                 throw errors.models.heightNonFloat;
               }
