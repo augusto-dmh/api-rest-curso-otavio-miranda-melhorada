@@ -1,7 +1,7 @@
-import Aluno from "./Aluno";
+import Student from "./Student";
 import User from "./User";
-import Foto from "./Foto";
+import Photo from "./Photo";
 
-const models = [Aluno, User, Foto];
+const models = [Student, User, Photo];
 
 export default models;

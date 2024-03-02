@@ -11,8 +11,8 @@ const store = async (req, res) => {
 
   try {
     const newUser = await User.create(req.body);
-    const { id, nome, email } = newUser;
-    res.json({ id, nome, email });
+    const { id, name, email } = newUser;
+    res.json({ id, name, email });
   } catch (e) {
     if (e instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
@@ -32,7 +32,7 @@ const store = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const users = await User.findAll({ attributes: ["id", "nome", "email"] });
+    const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
   } catch (e) {
     res.status(500).json({
@@ -46,8 +46,8 @@ const show = async (req, res) => {
     const { id } = req.params;
     const user = await User.findByPk(id);
 
-    const { nome, email } = user;
-    res.json({ id, nome, email });
+    const { name, email } = user;
+    res.json({ id, name, email });
   } catch (e) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
@@ -73,9 +73,9 @@ const update = async (req, res) => {
     }
 
     const updatedData = await user.update(req.body);
-    const { nome, email } = updatedData;
+    const { name, email } = updatedData;
 
-    res.json({ id, nome, email });
+    res.json({ id, name, email });
   } catch (e) {
     if (e instanceof ValidationError) {
       const apiError = errors.controllers.validationError;

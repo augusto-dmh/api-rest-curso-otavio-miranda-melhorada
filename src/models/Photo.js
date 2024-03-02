@@ -3,7 +3,7 @@ import appConfig from "../config/appConfig";
 import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
-export default class Foto extends Model {
+export default class Photo extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -44,6 +44,6 @@ export default class Foto extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Aluno, { foreignKey: "aluno_id" });
+    this.belongsTo(models.Student, { foreignKey: "student_id" });
   }
 }

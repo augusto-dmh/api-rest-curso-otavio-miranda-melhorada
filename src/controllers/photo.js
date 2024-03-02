@@ -2,7 +2,7 @@ import multer from "multer";
 import { ValidationError } from "sequelize";
 import * as errors from "../validation/errors";
 import multerConfig from "../config/multer";
-import Foto from "../models/Foto";
+import Photo from "../models/Photo";
 
 const upload = multer(multerConfig).single("photo");
 
@@ -10,17 +10,17 @@ const store = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({
-        errors: errors.controllers.invalidFotoType,
+        errors: errors.controllers.invalidPhotoType,
       });
     }
 
     const { originalname, filename } = req.file;
-    const { aluno_id } = req.body;
+    const { student_id } = req.body;
 
     try {
-      const foto = await Foto.create({ originalname, filename, aluno_id });
+      const photo = await Photo.create({ originalname, filename, student_id });
 
-      res.json(foto);
+      res.json(photo);
     } catch (e) {
       if (e instanceof ValidationError) {
         console.log(e);

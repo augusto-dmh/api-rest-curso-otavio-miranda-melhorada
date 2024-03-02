@@ -1,23 +1,23 @@
 import { ValidationError } from "sequelize";
 import * as errors from "../validation/errors";
-import Aluno from "../models/Aluno";
-import Foto from "../models/Foto";
+import Student from "../models/Student";
+import Photo from "../models/Photo";
 
 const index = async (req, res) => {
   try {
-    const alunos = await Aluno.findAll({
+    const students = await Student.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
       order: [
         ["id", "DESC"],
-        [Foto, "id", "DESC"],
+        [Photo, "id", "DESC"],
       ],
       include: {
-        model: Foto,
+        model: Photo,
         attributes: ["url", "filename"],
       },
     });
 
-    res.json(alunos);
+    res.json(students);
   } catch (err) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
@@ -27,9 +27,9 @@ const index = async (req, res) => {
 
 const store = async (req, res) => {
   try {
-    const aluno = await Aluno.create(req.body);
+    const student = await Student.create(req.body);
 
-    res.json(aluno);
+    res.json(student);
   } catch (e) {
     if (e instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
@@ -57,25 +57,25 @@ const show = async (req, res) => {
       });
     }
 
-    const aluno = await Aluno.findByPk(id, {
+    const student = await Student.findByPk(id, {
       attributes: { exclude: ["createdAt", "updatedAt"] },
       order: [
         ["id", "DESC"],
-        [Foto, "id", "DESC"],
+        [Photo, "id", "DESC"],
       ],
       include: {
-        model: Foto,
+        model: Photo,
         attributes: ["url", "filename"],
       },
     });
 
-    if (!aluno) {
+    if (!student) {
       return res.status(404).json({
-        errors: errors.controllers.alunoNotFound,
+        errors: errors.controllers.studentNotFound,
       });
     }
 
-    res.json(aluno);
+    res.json(student);
   } catch (e) {
     if (e instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
@@ -103,16 +103,16 @@ const destroy = async (req, res) => {
       });
     }
 
-    const aluno = await Aluno.findByPk(id);
+    const student = await Student.findByPk(id);
 
-    if (!aluno) {
+    if (!student) {
       return res.status(404).json({
-        errors: errors.controllers.alunoNotFound,
+        errors: errors.controllers.studentNotFound,
       });
     }
 
-    await aluno.destroy();
-    res.json("Aluno successfully deleted");
+    await student.destroy();
+    res.json("Student successfully deleted");
   } catch (e) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
@@ -130,17 +130,17 @@ const update = async (req, res) => {
       });
     }
 
-    const aluno = await Aluno.findByPk(id);
+    const student = await Student.findByPk(id);
 
-    if (!aluno) {
+    if (!student) {
       return res.status(404).json({
-        errors: errors.controllers.alunoNotFound,
+        errors: errors.controllers.studentNotFound,
       });
     }
 
-    const newAluno = await aluno.update(req.body);
+    const newStudent = await Student.update(req.body);
 
-    res.json(newAluno);
+    res.json(newStudent);
   } catch (e) {
     if (e instanceof ValidationError) {
       const apiError = errors.controllers.validationError;

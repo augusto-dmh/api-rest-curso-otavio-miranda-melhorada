@@ -2,11 +2,11 @@ import { Model, DataTypes } from "sequelize";
 import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
-export default class Aluno extends Model {
+export default class Student extends Model {
   static init(sequelize) {
     super.init(
       {
-        nome: {
+        name: {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
@@ -20,7 +20,7 @@ export default class Aluno extends Model {
             },
           },
         },
-        sobrenome: {
+        last_name: {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
@@ -51,7 +51,7 @@ export default class Aluno extends Model {
             },
           },
         },
-        idade: {
+        age: {
           type: DataTypes.INTEGER,
           defaultValue: "",
           validate: {
@@ -65,7 +65,7 @@ export default class Aluno extends Model {
             },
           },
         },
-        peso: {
+        weight: {
           type: DataTypes.FLOAT,
           defaultValue: "",
           validate: {
@@ -79,7 +79,7 @@ export default class Aluno extends Model {
             },
           },
         },
-        altura: {
+        height: {
           type: DataTypes.FLOAT,
           defaultValue: "",
           validate: {
@@ -102,7 +102,7 @@ export default class Aluno extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Foto, { foreignKey: "aluno_id" });
+    this.hasMany(models.Photo, { foreignKey: "student_id" });
   }
 }
 

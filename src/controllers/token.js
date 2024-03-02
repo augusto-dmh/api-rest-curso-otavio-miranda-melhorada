@@ -38,7 +38,7 @@ const store = async (req, res) => {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    res.json({ token, user: { nome: user.nome, id, email } });
+    res.json({ token, user: { name: user.name, id, email } });
   } catch (err) {
     if (err instanceof ValidationError) {
       console.log(err);

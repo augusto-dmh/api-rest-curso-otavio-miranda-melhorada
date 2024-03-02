@@ -21,18 +21,18 @@ export const missingId = new ApiError(
   "'id' parameter is missing.",
 );
 
-export const alunoNotFound = new ApiError(
-  "/errors/aluno-not-found",
+export const studentNotFound = new ApiError(
+  "/errors/student-not-found",
   404,
-  "Aluno Not Found",
-  "Aluno not found.",
+  "Student Not Found",
+  "student not found.",
 );
 
-export const alunoId = new ApiError(
-  "/errors/alunoId-invalid",
+export const studentId = new ApiError(
+  "/errors/studentId-invalid",
   400,
-  "AlunoId Invalid",
-  "'aluno_id' does not refer to any aluno's id.",
+  "'studentId' Invalid",
+  "'studentId' does not refer to any student's id.",
 );
 
 export const missingCredentials = new ApiError(
@@ -70,9 +70,9 @@ export const passwordHashAssigning = new ApiError(
   "The field passwordHash can't be assigned.",
 );
 
-export const invalidFotoType = new ApiError(
-  "/errors/foto-invalid-type",
   415,
+export const invalidPhotoType = new ApiError(
+  "/errors/photo-invalid-type",
   "Invalid File Type",
   "File must be of type PNG or JPG",
 );
