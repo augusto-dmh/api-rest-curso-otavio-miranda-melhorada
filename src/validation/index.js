@@ -24,7 +24,11 @@ export const isInteger = (value) => {
   return schema.safeParse(value).success;
 };
 
-export const isNotEmpty = (string) => {
-  const schema = z.string().min(1);
-  return schema.safeParse(string).success;
+// that's applied to non-string-type columns too - like 'age', because when they're not informed on creating/updating row routes where they should,
+// they get during instantiation "" as value and are checkable with this validation. Then a "'field' is required" is thrown.
+export const isNotEmpty = (value) => {
+  if (typeof value !== "string") return true;
+
+  const schema = z.string().trim().min(1);
+  return schema.safeParse(value).success;
 };
