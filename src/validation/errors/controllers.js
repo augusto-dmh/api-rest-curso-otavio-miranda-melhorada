@@ -63,11 +63,11 @@ export const userNotFound = new ApiError(
   "User not found.",
 );
 
-export const passwordHashUpdate = new ApiError(
-  "/errors/passwordHash-update-forbidden",
+export const passwordHashAssigning = new ApiError(
+  "/errors/passwordHash-assigning-forbidden",
   403,
-  "PasswordHash Update Forbidden",
-  "The field passwordHash can't be updated.",
+  "PasswordHash Assigning Forbidden",
+  "The field passwordHash can't be assigned.",
 );
 
 export const invalidFotoType = new ApiError(
