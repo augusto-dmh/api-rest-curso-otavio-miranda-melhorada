@@ -12,10 +12,10 @@ export default class Aluno extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.nameEmpty;
+                throw errors.models.name.empty.message;
               }
               if (!validations.isLengthValid(value, 3, 255)) {
-                throw errors.models.nameLength;
+                throw errors.models.name.invalidLength.message;
               }
             },
           },
@@ -26,10 +26,10 @@ export default class Aluno extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.lastNameEmpty;
+                throw errors.models.lastName.empty.message;
               }
               if (!validations.isLengthValid(value, 3, 255)) {
-                throw errors.models.lastNameLength;
+                throw errors.models.lastName.invalidLength.message;
               }
             },
           },
@@ -38,15 +38,15 @@ export default class Aluno extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           unique: {
-            msg: errors.models.emailInUse.message,
+            msg: errors.models.email.inUse.message,
           },
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.emailEmpty;
+                throw errors.models.email.empty.message;
               }
               if (!validations.isEmailValid(value)) {
-                throw errors.models.emailValidity;
+                throw errors.models.email.invalid.message;
               }
             },
           },
@@ -57,10 +57,10 @@ export default class Aluno extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.ageEmpty;
+                throw errors.models.age.empty.message;
               }
               if (!validations.isInteger(value)) {
-                throw errors.models.ageNonInteger;
+                throw errors.models.age.nonInteger.message;
               }
             },
           },
@@ -71,10 +71,10 @@ export default class Aluno extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.weightEmpty;
+                throw errors.models.weight.empty.message;
               }
               if (!validations.isNumber(value)) {
-                throw errors.models.weightNonFloat;
+                throw errors.models.weight.nonFloat.message;
               }
             },
           },
@@ -85,10 +85,10 @@ export default class Aluno extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.heightEmpty;
+                throw errors.models.height.empty.message;
               }
               if (!validations.isNumber(value)) {
-                throw errors.models.heightNonFloat;
+                throw errors.models.height.nonFloat.message;
               }
             },
           },
