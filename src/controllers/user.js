@@ -3,7 +3,7 @@ import User from "../models/User";
 import * as errors from "../validation/errors";
 
 const store = async (req, res) => {
-  if (req.body.password_hash) {
+  if (req.body.passwordHash) {
     return res.status(404).json({
       errors: errors.controllers.passwordHashAssigning,
     });
@@ -66,7 +66,7 @@ const update = async (req, res) => {
       });
     }
 
-    if (req.body.password_hash) {
+    if (req.body.passwordHash) {
       return res.status(404).json({
         errors: errors.controllers.passwordHashAssigning,
       });

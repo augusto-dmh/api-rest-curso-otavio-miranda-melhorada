@@ -25,7 +25,7 @@ const store = async (req, res) => {
     // or "No user found with matching email" at the validation above and "Wrong password" below, telling in which field
     // the problem lies and why.
 
-    const passwordsMatch = await bcrypt.compare(password, user.password_hash);
+    const passwordsMatch = await bcrypt.compare(password, user.passwordHash);
 
     if (!passwordsMatch) {
       return res.status(400).json({

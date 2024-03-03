@@ -20,7 +20,7 @@ export default class Student extends Model {
             },
           },
         },
-        last_name: {
+        lastName: {
           type: DataTypes.STRING,
           defaultValue: "",
           validate: {
@@ -102,7 +102,7 @@ export default class Student extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Photo, { foreignKey: "student_id" });
+    this.hasMany(models.Photo, { foreignKey: "studentId" });
   }
 }
 

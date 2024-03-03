@@ -15,10 +15,10 @@ const store = (req, res) => {
     }
 
     const { originalname, filename } = req.file;
-    const { student_id } = req.body;
+    const { studentId } = req.body;
 
     try {
-      const photo = await Photo.create({ originalname, filename, student_id });
+      const photo = await Photo.create({ originalname, filename, studentId });
 
       res.json(photo);
     } catch (e) {
