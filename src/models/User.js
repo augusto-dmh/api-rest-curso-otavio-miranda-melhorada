@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import bcryptjs from "bcryptjs";
+import { hashSync } from "bcryptjs";
 import * as validations from "../validation";
 import * as errors from "../validation/errors";
 
@@ -38,11 +38,8 @@ export default class User extends Model {
             },
           },
         },
-        passwordHash: {
-          type: DataTypes.STRING,
-        },
         password: {
-          type: DataTypes.VIRTUAL,
+          type: DataTypes.STRING,
           defaultValue: "",
           validate: {
             custom(value) {
@@ -61,9 +58,8 @@ export default class User extends Model {
       },
     );
 
-    this.addHook("beforeSave", async (user) => {
-      if (!user.password) return;
-      user.passwordHash = await bcryptjs.hash(user.password, 8);
+    this.addHook("afterValidate", (user) => {
+      user.password = hashSync(user.password, 10);
     });
 
     return this;

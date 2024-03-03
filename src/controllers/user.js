@@ -3,12 +3,6 @@ import User from "../models/User";
 import * as errors from "../validation/errors";
 
 const store = async (req, res) => {
-  if (req.body.passwordHash) {
-    return res.status(404).json({
-      errors: errors.controllers.passwordHashAssigning,
-    });
-  }
-
   try {
     const newUser = await User.create(req.body);
     const { id, name, email } = newUser;
@@ -63,12 +57,6 @@ const update = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         errors: errors.controllers.userNotFound,
-      });
-    }
-
-    if (req.body.passwordHash) {
-      return res.status(404).json({
-        errors: errors.controllers.passwordHashAssigning,
       });
     }
 
