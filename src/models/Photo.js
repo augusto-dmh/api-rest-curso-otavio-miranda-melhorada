@@ -38,12 +38,13 @@ export default class Photo extends Model {
       },
       {
         sequelize,
+        modelName: "photo",
       },
     );
     return this;
   }
 
   static associate(models) {
-    this.belongsTo(models.Student, { foreignKey: "studentId" });
+    this.belongsTo(models.student, { foreignKey: "studentId" });
   }
 }
