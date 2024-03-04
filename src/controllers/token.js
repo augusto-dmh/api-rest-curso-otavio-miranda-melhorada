@@ -41,7 +41,6 @@ const store = async (req, res) => {
     res.json({ token, user: { name: user.name, id, email } });
   } catch (err) {
     if (err instanceof ValidationError) {
-      console.log(err);
       const apiError = errors.controllers.validationError;
       apiError.subErrors = err.errors.map((error) => error.message);
 

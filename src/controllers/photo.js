@@ -21,11 +21,10 @@ const store = (req, res) => {
       const photo = await Photo.create({ originalname, filename, studentId });
 
       res.json(photo);
-    } catch (e) {
-      if (e instanceof ValidationError) {
-        console.log(e);
+    } catch (err) {
+      if (err instanceof ValidationError) {
         const apiError = errors.controllers.validationError;
-        apiError.subErrors = e.errors.map((error) => error.message);
+        apiError.subErrors = err.errors.map((error) => error.message);
 
         res.status(400).json({
           error: apiError,

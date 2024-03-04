@@ -30,10 +30,10 @@ const store = async (req, res) => {
     const student = await Student.create(req.body);
 
     res.json(student);
-  } catch (e) {
-    if (e instanceof ValidationError) {
+  } catch (err) {
+    if (err instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
-      apiError.subErrors = e.errors.map((error) => error.message);
+      apiError.subErrors = err.errors.map((error) => error.message);
 
       res.status(400).json({
         error: apiError,
@@ -76,10 +76,10 @@ const show = async (req, res) => {
     }
 
     res.json(student);
-  } catch (e) {
-    if (e instanceof ValidationError) {
+  } catch (err) {
+    if (err instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
-      apiError.subErrors = e.errors.map((error) => error.message);
+      apiError.subErrors = err.errors.map((error) => error.message);
 
       res.status(400).json({
         error: apiError,
@@ -113,7 +113,7 @@ const destroy = async (req, res) => {
 
     await student.destroy();
     res.json("Student successfully deleted");
-  } catch (e) {
+  } catch (err) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
     });
@@ -141,10 +141,10 @@ const update = async (req, res) => {
     const newStudent = await Student.update(req.body);
 
     res.json(newStudent);
-  } catch (e) {
-    if (e instanceof ValidationError) {
+  } catch (err) {
+    if (err instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
-      apiError.subErrors = e.errors.map((error) => error.message);
+      apiError.subErrors = err.errors.map((error) => error.message);
 
       res.status(400).json({
         error: apiError,

@@ -7,10 +7,10 @@ const store = async (req, res) => {
     const newUser = await User.create(req.body);
     const { id, name, email } = newUser;
     res.json({ id, name, email });
-  } catch (e) {
-    if (e instanceof ValidationError) {
+  } catch (err) {
+    if (err instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
-      apiError.subErrors = e.errors.map((error) => error.message);
+      apiError.subErrors = err.errors.map((error) => error.message);
 
       res.status(400).json({
         error: apiError,
@@ -28,7 +28,7 @@ const index = async (req, res) => {
   try {
     const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
-  } catch (e) {
+  } catch (err) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
     });
@@ -42,7 +42,7 @@ const show = async (req, res) => {
 
     const { name, email } = user;
     res.json({ id, name, email });
-  } catch (e) {
+  } catch (err) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
     });
@@ -64,10 +64,10 @@ const update = async (req, res) => {
     const { name, email } = updatedData;
 
     res.json({ id, name, email });
-  } catch (e) {
-    if (e instanceof ValidationError) {
+  } catch (err) {
+    if (err instanceof ValidationError) {
       const apiError = errors.controllers.validationError;
-      apiError.subErrors = e.errors.map((error) => error.message);
+      apiError.subErrors = err.errors.map((error) => error.message);
 
       res.status(400).json({
         error: apiError,
@@ -94,7 +94,7 @@ const destroy = async (req, res) => {
 
     await user.destroy();
     res.json(null);
-  } catch (e) {
+  } catch (err) {
     res.status(500).json({
       error: errors.controllers.internalServerError,
     });

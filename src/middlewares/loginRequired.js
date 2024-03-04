@@ -28,7 +28,7 @@ export default async (req, res, next) => {
     req.userEmail = email;
 
     return next();
-  } catch (e) {
+  } catch (err) {
     res.status(401).json({
       errors: ["Authentication Error"],
     });
