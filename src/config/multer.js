@@ -1,7 +1,6 @@
-import multer from "multer";
+import multer, { MulterError } from "multer";
 import path from "path";
-
-const rand = () => Math.floor(Math.random() * 10000 + 10000);
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   fileFilter: (req, file, cb) => {
@@ -16,7 +15,7 @@ export default {
       cb(null, path.resolve(__dirname, "..", "..", "uploads", "images"));
     },
     filename: (req, file, cb) => {
-      cb(null, `${Date.now()}_${rand()}${path.extname(file.originalname)}`);
+      cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
     },
   }),
 };
