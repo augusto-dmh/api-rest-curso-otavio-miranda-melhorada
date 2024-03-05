@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export default {
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "image/png" && file.mimetype !== "image/jpeg") {
-      return cb(new multer.MulterError("File must be of type PNG or JPG"));
+      return cb(new MulterError("LIMIT_INVALID_TYPE"));
     }
 
     return cb(null, true);
