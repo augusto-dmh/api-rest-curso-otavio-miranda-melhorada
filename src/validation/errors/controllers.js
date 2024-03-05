@@ -76,3 +76,10 @@ export const invalidPhotoType = new ApiError(
   "Invalid File Type",
   "File must be of type PNG or JPG",
 );
+
+export const invalidPhotoSize = new ApiError(
+  "/errors/photo-invalid-size",
+  422,
+  "Invalid Photo Size",
+  "The photo exceeds the limit size (2MB).",
+);

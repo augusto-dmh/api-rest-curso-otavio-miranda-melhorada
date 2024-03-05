@@ -12,6 +12,10 @@ export default (req, res, next) => {
       res.status(400).json({ error: errors.invalidPhotoType });
       return;
     }
+    if (err.code === "LIMIT_FILE_SIZE") {
+      res.status(400).json({ error: errors.invalidPhotoSize });
+      return;
+    }
     return res.status(500).json({ error: errors.internalServerError });
   });
 };

@@ -10,6 +10,9 @@ export default {
 
     return cb(null, true);
   },
+  limits: {
+    fileSize: 1024 * 1024 * 2,
+  },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, path.resolve(__dirname, "..", "..", "uploads", "images"));
