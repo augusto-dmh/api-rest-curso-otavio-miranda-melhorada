@@ -8,14 +8,17 @@ export default (req, res, next) => {
   upload(req, res, (err) => {
     if (!err) return next();
 
-    if (err.code === "LIMIT_INVALID_TYPE") {
-      res.status(400).json({ error: errors.invalidPhotoType });
-      return;
+    switch (err.code) {
+      case "LIMIT_INVALID_TYPE":
+        next(errors.invalidPhotoType);
+        break;
+
+      case "LIMIT_FILE_SIZE":
+        next(errors.invalidPhotoSize);
+        break;
+
+      default:
+        next(errors.internalServerError);
     }
-    if (err.code === "LIMIT_FILE_SIZE") {
-      res.status(400).json({ error: errors.invalidPhotoSize });
-      return;
-    }
-    return res.status(500).json({ error: errors.internalServerError });
   });
 };

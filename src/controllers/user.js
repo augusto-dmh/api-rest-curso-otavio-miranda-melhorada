@@ -1,41 +1,26 @@
-import { ValidationError } from "sequelize";
 import User from "../models/User";
 import * as errors from "../validation/errors";
 
-const store = async (req, res) => {
+const store = async (req, res, next) => {
   try {
     const newUser = await User.create(req.body);
     const { id, name, email } = newUser;
     res.json({ id, name, email });
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const apiError = errors.controllers.validationError;
-      apiError.subErrors = err.errors.map((error) => error.message);
-
-      res.status(400).json({
-        error: apiError,
-      });
-      return;
-    }
-
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const index = async (req, res) => {
+const index = async (req, res, next) => {
   try {
     const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
   } catch (err) {
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const show = async (req, res) => {
+const show = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
@@ -43,21 +28,18 @@ const show = async (req, res) => {
     const { name, email } = user;
     res.json({ id, name, email });
   } catch (err) {
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   try {
     const id = req.userId;
     const user = await User.findByPk(id);
 
     if (!user) {
-      return res.status(404).json({
-        errors: errors.controllers.userNotFound,
-      });
+      next(errors.controllers.userNotFound);
+      return;
     }
 
     const updatedData = await user.update(req.body);
@@ -65,39 +47,24 @@ const update = async (req, res) => {
 
     res.json({ id, name, email });
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const apiError = errors.controllers.validationError;
-      apiError.subErrors = err.errors.map((error) => error.message);
-
-      res.status(400).json({
-        error: apiError,
-      });
-      return;
-    }
-
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const destroy = async (req, res) => {
+const destroy = async (req, res, next) => {
   try {
     const id = req.userId;
     const user = await User.findByPk(id);
 
     if (!user) {
-      return res.status(404).json({
-        errors: errors.controllers.userNotFound,
-      });
+      next(errors.controllers.userNotFound);
+      return;
     }
 
     await user.destroy();
     res.json(null);
   } catch (err) {
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 

@@ -6,6 +6,7 @@ import path from "path";
 import cors from "cors";
 // import helmet from 'helmet'
 import routes from "./routes/index";
+import errorHandler from "./middlewares/errorHandler";
 
 const whitelist = [];
 
@@ -31,5 +32,6 @@ app.use(cors(corsOptions));
 // app.use(helmet());
 
 app.use(routes);
+app.use(errorHandler);
 
 export default app;

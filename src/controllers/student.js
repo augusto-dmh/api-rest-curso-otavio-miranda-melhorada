@@ -1,9 +1,8 @@
-import { ValidationError } from "sequelize";
 import * as errors from "../validation/errors";
 import Student from "../models/Student";
 import Photo from "../models/Photo";
 
-const index = async (req, res) => {
+const index = async (req, res, next) => {
   try {
     const students = await Student.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -19,42 +18,27 @@ const index = async (req, res) => {
 
     res.json(students);
   } catch (err) {
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const store = async (req, res) => {
+const store = async (req, res, next) => {
   try {
     const student = await Student.create(req.body);
 
     res.json(student);
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const apiError = errors.controllers.validationError;
-      apiError.subErrors = err.errors.map((error) => error.message);
-
-      res.status(400).json({
-        error: apiError,
-      });
-      return;
-    }
-
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const show = async (req, res) => {
+const show = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(400).json({
-        errors: errors.controllers.missingId,
-      });
+      next(errors.controllers.missingId);
+      return;
     }
 
     const student = await Student.findByPk(id, {
@@ -70,91 +54,60 @@ const show = async (req, res) => {
     });
 
     if (!student) {
-      return res.status(404).json({
-        errors: errors.controllers.studentNotFound,
-      });
+      next(errors.controllers.studentNotFound);
+      return;
     }
 
     res.json(student);
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const apiError = errors.controllers.validationError;
-      apiError.subErrors = err.errors.map((error) => error.message);
-
-      res.status(400).json({
-        error: apiError,
-      });
-      return;
-    }
-
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const destroy = async (req, res) => {
+const destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(400).json({
-        errors: errors.controllers.missingId,
-      });
+      next(errors.controllers.missingId);
+      return;
     }
 
     const student = await Student.findByPk(id);
 
     if (!student) {
-      return res.status(404).json({
-        errors: errors.controllers.studentNotFound,
-      });
+      next(errors.controllers.studentNotFound);
+      return;
     }
 
     await student.destroy();
     res.json("Student successfully deleted");
   } catch (err) {
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(400).json({
-        errors: errors.controllers.missingId,
-      });
+      next(errors.controllers.missingId);
+      return;
     }
 
     const student = await Student.findByPk(id);
 
     if (!student) {
-      return res.status(404).json({
-        errors: errors.controllers.studentNotFound,
-      });
+      next(errors.controllers.studentNotFound);
+      return;
     }
 
     const newStudent = await Student.update(req.body);
 
     res.json(newStudent);
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const apiError = errors.controllers.validationError;
-      apiError.subErrors = err.errors.map((error) => error.message);
-
-      res.status(400).json({
-        error: apiError,
-      });
-      return;
-    }
-
-    res.status(500).json({
-      error: errors.controllers.internalServerError,
-    });
+    next(err);
   }
 };
 
