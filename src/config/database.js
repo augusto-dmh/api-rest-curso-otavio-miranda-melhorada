@@ -16,4 +16,5 @@ module.exports = {
     timezone: "America/Sao_Paulo",
   },
   timezone: "America/Sao_Paulo",
+  logging: false,
 };
