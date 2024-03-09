@@ -7,7 +7,14 @@ const store = async (req, res, next) => {
   const { email = "", password = "" } = req.body;
 
   if (!email || !password) {
-    next(errors.controllers.missingCredentials);
+    next({
+      err: errors.controllers.missingCredentials,
+      source: {
+        function: "tokenController.store",
+        file: "src/controllers/token.js",
+        line: 9,
+      },
+    });
     return;
   }
 
@@ -15,7 +22,14 @@ const store = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      next(errors.controllers.invalidCredentials);
+      next({
+        err: errors.controllers.invalidCredentials,
+        source: {
+          function: "tokenController.store",
+          file: "src/controllers/token.js",
+          line: 24,
+        },
+      });
       return;
     }
     // it would be more accurate to inform "Invalid credentials" on both, suggesting that at least one field is preventing the login,
@@ -25,7 +39,14 @@ const store = async (req, res, next) => {
     const passwordsMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordsMatch) {
-      next(errors.controllers.passwordsNotMatch);
+      next({
+        err: errors.controllers.passwordsNotMatch,
+        source: {
+          function: "tokenController.store",
+          file: "src/controllers/token.js",
+          line: 41,
+        },
+      });
       return;
     }
 
@@ -36,7 +57,7 @@ const store = async (req, res, next) => {
 
     res.json({ token, user: { name: user.name, id, email } });
   } catch (err) {
-    next(err);
+    next({ err });
   }
 };
 

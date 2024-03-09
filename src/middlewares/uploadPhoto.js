@@ -8,17 +8,23 @@ export default (req, res, next) => {
   upload(req, res, (err) => {
     if (!err) return next();
 
+    const source = {
+      function: "upload",
+      file: "src/middlewares/uploadPhoto",
+      line: 8,
+    };
+
     switch (err.code) {
       case "LIMIT_INVALID_TYPE":
-        next(errors.invalidPhotoType);
+        next({ err: errors.invalidPhotoType, source });
         break;
 
       case "LIMIT_FILE_SIZE":
-        next(errors.invalidPhotoSize);
+        next({ err: errors.invalidPhotoSize, source });
         break;
 
       default:
-        next(errors.internalServerError);
+        next({ err: errors.internalServerError, source });
     }
   });
 };

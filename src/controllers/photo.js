@@ -9,7 +9,14 @@ const store = async (req, res, next) => {
 
     res.json(photo);
   } catch (err) {
-    next(err);
+    next({
+      err,
+      source: {
+        function: "Photo.create",
+        file: "src/controllers/photo.js",
+        line: 8,
+      },
+    });
   }
 };
 

@@ -7,7 +7,14 @@ const store = async (req, res, next) => {
     const { id, name, email } = newUser;
     res.json({ id, name, email });
   } catch (err) {
-    next(err);
+    next({
+      err,
+      source: {
+        function: "User.create",
+        file: "src/controllers/user.js",
+        line: 6,
+      },
+    });
   }
 };
 
@@ -16,7 +23,14 @@ const index = async (req, res, next) => {
     const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
   } catch (err) {
-    next(err);
+    next({
+      err,
+      source: {
+        function: "User.findAll",
+        file: "src/controllers/user.js",
+        line: 23,
+      },
+    });
   }
 };
 
@@ -28,7 +42,14 @@ const show = async (req, res, next) => {
     const { name, email } = user;
     res.json({ id, name, email });
   } catch (err) {
-    next(err);
+    next({
+      err,
+      source: {
+        function: "User.findByPk",
+        file: "src/controllers/user.js",
+        line: 40,
+      },
+    });
   }
 };
 
@@ -38,7 +59,14 @@ const update = async (req, res, next) => {
     const user = await User.findByPk(id);
 
     if (!user) {
-      next(errors.controllers.userNotFound);
+      next({
+        err: errors.controllers.userNotFound,
+        source: {
+          function: "userController.update",
+          file: "src/controllers/user.js",
+          line: 61,
+        },
+      });
       return;
     }
 
@@ -47,7 +75,7 @@ const update = async (req, res, next) => {
 
     res.json({ id, name, email });
   } catch (err) {
-    next(err);
+    next({ err });
   }
 };
 
@@ -57,14 +85,21 @@ const destroy = async (req, res, next) => {
     const user = await User.findByPk(id);
 
     if (!user) {
-      next(errors.controllers.userNotFound);
+      next({
+        err: errors.controllers.userNotFound,
+        source: {
+          function: "userController.destroy",
+          file: "src/controllers/user.js",
+          line: 87,
+        },
+      });
       return;
     }
 
     await user.destroy();
     res.json(null);
   } catch (err) {
-    next(err);
+    next({ err });
   }
 };
 
