@@ -1,4 +1,5 @@
 import * as errors from "../validation/errors";
+import ApiError from "../validation/errors/classes/ApiError";
 import Student from "../models/Student";
 import Photo from "../models/Photo";
 
@@ -52,7 +53,7 @@ const show = async (req, res, next) => {
 
     if (!id) {
       next({
-        err: errors.controllers.missingId,
+        err: new ApiError(...errors.controllers.missingId),
         source: {
           function: "studentController.show",
           file: "src/controllers/student.js",
@@ -76,7 +77,7 @@ const show = async (req, res, next) => {
 
     if (!student) {
       next({
-        err: errors.controllers.studentNotFound,
+        err: new ApiError(...errors.controllers.studentNotFound),
         source: {
           function: "studentController.show",
           file: "src/controllers/student.js",
@@ -105,7 +106,7 @@ const destroy = async (req, res, next) => {
 
     if (!id) {
       next({
-        err: errors.controllers.missingId,
+        err: new ApiError(...errors.controllers.missingId),
         source: {
           function: "studentController.destroy",
           file: "src/controllers/student.js",
@@ -119,7 +120,7 @@ const destroy = async (req, res, next) => {
 
     if (!student) {
       next({
-        err: errors.controllers.studentNotFound,
+        err: new ApiError(...errors.controllers.studentNotFound),
         source: {
           function: "studentController.destroy",
           file: "src/controllers/student.js",
@@ -144,7 +145,7 @@ const update = async (req, res, next) => {
 
     if (!id) {
       next({
-        err: errors.controllers.missingId,
+        err: new ApiError(...errors.controllers.missingId),
         source: {
           function: "studentController.update",
           file: "src/controllers/student.js",
@@ -158,7 +159,7 @@ const update = async (req, res, next) => {
 
     if (!student) {
       next({
-        err: errors.controllers.studentNotFound,
+        err: new ApiError(...errors.controllers.studentNotFound),
         source: {
           function: "studentController.update",
           file: "src/controllers/student.js",

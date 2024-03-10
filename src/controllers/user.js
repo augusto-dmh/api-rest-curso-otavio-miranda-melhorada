@@ -1,5 +1,6 @@
 import User from "../models/User";
 import * as errors from "../validation/errors";
+import ApiError from "../validation/errors/classes/ApiError";
 
 const store = async (req, res, next) => {
   try {
@@ -60,7 +61,7 @@ const update = async (req, res, next) => {
 
     if (!user) {
       next({
-        err: errors.controllers.userNotFound,
+        err: new ApiError(...errors.controllers.userNotFound),
         source: {
           function: "userController.update",
           file: "src/controllers/user.js",
@@ -86,7 +87,7 @@ const destroy = async (req, res, next) => {
 
     if (!user) {
       next({
-        err: errors.controllers.userNotFound,
+        err: new ApiError(...errors.controllers.userNotFound),
         source: {
           function: "userController.destroy",
           file: "src/controllers/user.js",

@@ -6,11 +6,7 @@ export const name = {
     "Invalid Name Length",
     "'name' must be between 3 and 255 characters.",
   ),
-  empty: new BaseError(
-    "/errors/name-empty",
-    "Name is Empty",
-    "'name' is required.",
-  ),
+  empty: new BaseError("/errors/name-empty", "Name is Empty", "'name' is required."),
 };
 
 export const lastName = {
@@ -19,29 +15,17 @@ export const lastName = {
     "Invalid Last Name Length",
     "'last name' must be between 3 and 255 characters.",
   ),
-  empty: new BaseError(
-    "/errors/lastName-empty",
-    "Last Name is Empty",
-    "'lastName' is required.",
-  ),
+  empty: new BaseError("/errors/lastName-empty", "Last Name is Empty", "'lastName' is required."),
 };
 
 export const email = {
-  invalid: new BaseError(
-    "/errors/email-invalid",
-    "Invalid Email",
-    "Invalid email.",
-  ),
+  invalid: new BaseError("/errors/email-invalid", "Invalid Email", "Invalid email."),
   inUse: new BaseError(
     "/errors/email-in-use",
     "Email in use",
-    "Email already in use. Please try another",
+    "Email already in use. Please try another.",
   ),
-  empty: new BaseError(
-    "/errors/email-empty",
-    "Email is Empty",
-    "'email' is required.",
-  ),
+  empty: new BaseError("/errors/email-empty", "Email is Empty", "'email' is required."),
 };
 
 export const age = {
@@ -50,53 +34,37 @@ export const age = {
     "Age Non Integer",
     "'age' must be an integer.",
   ),
-  empty: new BaseError(
-    "/errors/age-empty",
-    "Age is Empty",
-    "'age' is required.",
-  ),
+  empty: new BaseError("/errors/age-empty", "Age is Empty", "'age' is required."),
 };
 
 export const weight = {
   nonFloat: new BaseError(
     "/errors/weight-non-float",
     "Weight Non Float",
-    "'Weight' must be an float.",
+    "'Weight' must be a float.",
   ),
-  empty: new BaseError(
-    "/errors/weight-empty",
-    "Weight is Empty",
-    "'weight' is required.",
-  ),
+  empty: new BaseError("/errors/weight-empty", "Weight is Empty", "'weight' is required."),
 };
 
 export const height = {
   nonFloat: new BaseError(
     "/errors/height-non-float",
     "Height Non Float",
-    "'height' must be an float.",
+    "'height' must be a float.",
   ),
-  empty: new BaseError(
-    "/errors/height-empty",
-    "Height is Empty",
-    "'height' is required.",
-  ),
+  empty: new BaseError("/errors/height-empty", "Height is Empty", "'height' is required."),
 };
 
 export const originalname = {
   empty: new BaseError(
     "/errors/originalname-empty",
-    "Originalname is Empty",
+    "Original Name is Empty",
     "'originalname' is required.",
   ),
 };
 
 export const filename = {
-  empty: new BaseError(
-    "/errors/filenameEmpty-empty",
-    "Filename Empty",
-    "'filename' is required.",
-  ),
+  empty: new BaseError("/errors/filenameEmpty-empty", "Filename Empty", "'filename' is required."),
 };
 
 export const password = {
@@ -105,9 +73,5 @@ export const password = {
     "Invalid Password Length",
     "Password must be between 6 and 50 characters.",
   ),
-  empty: new BaseError(
-    "/errors/password-empty",
-    "Password is Empty",
-    "'password' is required.",
-  ),
+  empty: new BaseError("/errors/password-empty", "Password is Empty", "'password' is required."),
 };

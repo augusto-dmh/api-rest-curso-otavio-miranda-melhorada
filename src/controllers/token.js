@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as errors from "../validation/errors";
+import ApiError from "../validation/errors/classes/ApiError";
 import User from "../models/User";
 
 const store = async (req, res, next) => {
@@ -8,7 +9,7 @@ const store = async (req, res, next) => {
 
   if (!email || !password) {
     next({
-      err: errors.controllers.missingCredentials,
+      err: new ApiError(...errors.controllers.missingCredentials),
       source: {
         function: "tokenController.store",
         file: "src/controllers/token.js",
@@ -23,7 +24,7 @@ const store = async (req, res, next) => {
 
     if (!user) {
       next({
-        err: errors.controllers.invalidCredentials,
+        err: new ApiError(...errors.controllers.invalidCredentials),
         source: {
           function: "tokenController.store",
           file: "src/controllers/token.js",
@@ -40,7 +41,7 @@ const store = async (req, res, next) => {
 
     if (!passwordsMatch) {
       next({
-        err: errors.controllers.passwordsNotMatch,
+        err: new ApiError(...errors.controllers.passwordsNotMatch),
         source: {
           function: "tokenController.store",
           file: "src/controllers/token.js",
