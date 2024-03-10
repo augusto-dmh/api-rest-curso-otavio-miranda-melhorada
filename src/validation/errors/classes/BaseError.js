@@ -4,6 +4,14 @@ class BaseError extends Error {
     this.type = type;
     this.title = title;
   }
+
+  *[Symbol.iterator]() {
+    yield this.type;
+    yield this.title;
+    yield this.message;
+    yield this.status;
+    yield this.subErrors;
+  }
 }
 
 export default BaseError;

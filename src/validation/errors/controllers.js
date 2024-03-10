@@ -23,9 +23,9 @@ export const missingId = new BaseError(
 
 export const studentNotFound = new BaseError(
   "/errors/student-not-found",
-  "Student not found.",
-  "Student Not Found",
   404,
+  "Student Not Found",
+  "Student not found.",
 );
 
 export const studentId = new BaseError(
