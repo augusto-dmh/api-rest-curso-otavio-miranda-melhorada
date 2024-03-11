@@ -1,31 +1,31 @@
 import Base from "./classes/Base";
 
 export const validationError = new Base(
+  400,
   "/errors/validation-error",
   "Validation Error",
   "One or more validation errors occurred.",
-  400,
 );
 
 export const internalServerError = new Base(
+  500,
   "/errors/internal-server-error",
   "Internal Server Error",
   "An unexpected error occurred. Please try again later.",
-  500,
 );
 
 export const missingId = new Base(
+  400,
   "/errors/id-param-missing",
   "Missing Id Parameter",
-  "'id' parameter is missing.",
-  400,
+  "'id' parameter is required.",
 );
 
 export const studentNotFound = new Base(
+  404,
   "/errors/student-not-found",
   "Student Not Found",
   "Student not found.",
-  404,
 );
 
 export const studentId = new Base(
@@ -36,43 +36,43 @@ export const studentId = new Base(
 );
 
 export const missingCredentials = new Base(
+  400,
   "/errors/missing-credentials",
   "Missing Credentials",
   "'email' and 'password' are required.",
-  400,
 );
 
 export const invalidCredentials = new Base(
+  401,
   "/errors/invalid-credentials",
   "Invalid Credentials",
   "'email' or/and 'password' invalid.",
-  401,
 );
 
 export const passwordsNotMatch = new Base(
+  400,
   "/errors/passwords-not-match",
   "Passwords Not Match",
   "Invalid password.",
-  400,
 );
 
 export const userNotFound = new Base(
+  404,
   "/errors/user-not-found",
   "User Not Found",
   "User not found.",
-  404,
 );
 
 export const invalidPhotoType = new Base(
+  422,
   "/errors/photo-invalid-type",
   "Invalid File Type",
   "File must be of type PNG or JPG.",
-  422,
 );
 
 export const invalidPhotoSize = new Base(
+  422,
   "/errors/photo-invalid-size",
   "Invalid Photo Size",
   "The photo exceeds the limit size (2MB).",
-  422,
 );

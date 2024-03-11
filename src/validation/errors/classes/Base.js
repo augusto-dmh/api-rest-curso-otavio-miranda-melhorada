@@ -1,17 +1,17 @@
 class Base {
-  constructor(type, title, message, status, subErrors) {
+  constructor(status, type, title, message, subErrors) {
+    this.status = status;
     this.type = type;
     this.title = title;
     this.message = message;
-    this.status = status;
     this.subErrors = subErrors;
   }
 
   *[Symbol.iterator]() {
-    yield this.type;
-    yield this.title;
-    yield this.message;
     yield this.status;
+    yield this.title;
+    yield this.type;
+    yield this.message;
     yield this.subErrors;
   }
 }
