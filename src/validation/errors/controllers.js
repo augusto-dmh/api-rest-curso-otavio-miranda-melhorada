@@ -14,6 +14,13 @@ export const internalServerError = new Base(
   "An unexpected error occurred. Please try again later.",
 );
 
+export const missingAuthorization = new Base(
+  500,
+  "/errors/missing-authorization",
+  "Missing Authorization",
+  "'authorization' header is required.",
+);
+
 export const missingId = new Base(
   400,
   "/errors/id-param-missing",
@@ -26,13 +33,6 @@ export const studentNotFound = new Base(
   "/errors/student-not-found",
   "Student Not Found",
   "Student not found.",
-);
-
-export const studentId = new Base(
-  "/errors/studentId-invalid",
-  "'studentId' Invalid",
-  "'studentId' does not refer to any student's id.",
-  400,
 );
 
 export const missingCredentials = new Base(
@@ -50,7 +50,7 @@ export const invalidCredentials = new Base(
 );
 
 export const passwordsNotMatch = new Base(
-  400,
+  401,
   "/errors/passwords-not-match",
   "Passwords Not Match",
   "Invalid password.",
