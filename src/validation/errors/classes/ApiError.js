@@ -1,6 +1,4 @@
-import BaseError from "./BaseError";
-
-class ApiError extends BaseError {
+class ApiError extends Error {
   constructor(type, title, message, status, subErrors) {
     super(message);
     this.type = type;

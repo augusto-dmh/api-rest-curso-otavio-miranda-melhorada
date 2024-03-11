@@ -1,8 +1,10 @@
-class BaseError extends Error {
-  constructor(type, title, message) {
-    super(message);
+class Base {
+  constructor(type, title, message, status, subErrors) {
     this.type = type;
     this.title = title;
+    this.message = message;
+    this.status = status;
+    this.subErrors = subErrors;
   }
 
   *[Symbol.iterator]() {
@@ -14,4 +16,4 @@ class BaseError extends Error {
   }
 }
 
-export default BaseError;
+export default Base;
