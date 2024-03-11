@@ -1,4 +1,5 @@
 import Photo from "../models/Photo";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
 
 const store = async (req, res, next) => {
   const { originalname, filename } = req.file;
@@ -9,14 +10,13 @@ const store = async (req, res, next) => {
 
     res.json(photo);
   } catch (err) {
-    next({
-      err,
-      source: {
+    next(
+      new ErrorContext(err, {
         function: "Photo.create",
         file: "src/controllers/photo.js",
         line: 8,
-      },
-    });
+      }),
+    );
   }
 };
 

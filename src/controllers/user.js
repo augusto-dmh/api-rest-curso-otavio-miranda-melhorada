@@ -1,6 +1,7 @@
 import User from "../models/User";
 import * as errors from "../validation/errors";
 import ApiError from "../validation/errors/classes/ApiError";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
 
 const store = async (req, res, next) => {
   try {
@@ -8,14 +9,13 @@ const store = async (req, res, next) => {
     const { id, name, email } = newUser;
     res.json({ id, name, email });
   } catch (err) {
-    next({
-      err,
-      source: {
+    next(
+      new ErrorContext(err, {
         function: "User.create",
         file: "src/controllers/user.js",
-        line: 6,
-      },
-    });
+        line: 7,
+      }),
+    );
   }
 };
 
@@ -24,14 +24,13 @@ const index = async (req, res, next) => {
     const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
   } catch (err) {
-    next({
-      err,
-      source: {
+    next(
+      new ErrorContext(err, {
         function: "User.findAll",
         file: "src/controllers/user.js",
-        line: 23,
-      },
-    });
+        line: 21,
+      }),
+    );
   }
 };
 
@@ -43,14 +42,13 @@ const show = async (req, res, next) => {
     const { name, email } = user;
     res.json({ id, name, email });
   } catch (err) {
-    next({
-      err,
-      source: {
+    next(
+      new ErrorContext(err, {
         function: "User.findByPk",
         file: "src/controllers/user.js",
         line: 40,
-      },
-    });
+      }),
+    );
   }
 };
 
@@ -76,7 +74,7 @@ const update = async (req, res, next) => {
 
     res.json({ id, name, email });
   } catch (err) {
-    next({ err });
+    next(err);
   }
 };
 
@@ -100,7 +98,7 @@ const destroy = async (req, res, next) => {
     await user.destroy();
     res.json(null);
   } catch (err) {
-    next({ err });
+    next(err);
   }
 };
 

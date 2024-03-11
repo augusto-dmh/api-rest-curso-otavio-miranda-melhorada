@@ -2,36 +2,29 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as errors from "../validation/errors";
 import ApiError from "../validation/errors/classes/ApiError";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
 import User from "../models/User";
 
 const store = async (req, res, next) => {
   const { email = "", password = "" } = req.body;
 
   if (!email || !password) {
-    next({
-      err: new ApiError(...errors.controllers.missingCredentials),
-      source: {
-        function: "tokenController.store",
-        file: "src/controllers/token.js",
-        line: 9,
-      },
+    throw new ErrorContext(new ApiError(...errors.controllers.missingCredentials), {
+      function: "tokenController.store",
+      file: "src/controllers/token.js",
+      line: 9,
     });
-    return;
   }
 
   try {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      next({
-        err: new ApiError(...errors.controllers.invalidCredentials),
-        source: {
-          function: "tokenController.store",
-          file: "src/controllers/token.js",
-          line: 24,
-        },
+      throw new ErrorContext(new ApiError(...errors.controllers.invalidCredentials), {
+        function: "tokenController.store",
+        file: "src/controllers/token.js",
+        line: 24,
       });
-      return;
     }
     // it would be more accurate to inform "Invalid credentials" on both, suggesting that at least one field is preventing the login,
     // or "No user found with matching email" at the validation above and "Wrong password" below, telling in which field
@@ -40,15 +33,11 @@ const store = async (req, res, next) => {
     const passwordsMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordsMatch) {
-      next({
-        err: new ApiError(...errors.controllers.passwordsNotMatch),
-        source: {
-          function: "tokenController.store",
-          file: "src/controllers/token.js",
-          line: 41,
-        },
+      throw new ErrorContext(new ApiError(...errors.controllers.passwordsNotMatch), {
+        function: "tokenController.store",
+        file: "src/controllers/token.js",
+        line: 41,
       });
-      return;
     }
 
     const { id } = user;
@@ -58,7 +47,7 @@ const store = async (req, res, next) => {
 
     res.json({ token, user: { name: user.name, id, email } });
   } catch (err) {
-    next({ err });
+    next(err);
   }
 };
 
