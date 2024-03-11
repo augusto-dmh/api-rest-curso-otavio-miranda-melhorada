@@ -1,12 +1,17 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import ApiError from "../validation/errors/classes/ApiError";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
+import * as errors from "../validation/errors/controllers";
 
 export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({
-      errors: ["Authentication Error"],
+    throw new ErrorContext(new ApiError(...errors.missingAuthorization), {
+      function: "loginRequired",
+      file: "src/middlewares/loginRequired",
+      line: 10,
     });
   }
 
@@ -19,8 +24,10 @@ export default async (req, res, next) => {
     const user = await User.findOne({ where: { id, email } });
 
     if (!user) {
-      return res.status(401).json({
-        errors: ["Authentication Error"],
+      throw new ErrorContext(new ApiError(...errors.userNotFound), {
+        function: "loginRequired",
+        file: "src/middlewares/loginRequired",
+        line: 24,
       });
     }
 
@@ -29,8 +36,6 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
-    res.status(401).json({
-      errors: ["Authentication Error"],
-    });
+    next({ err });
   }
 };
