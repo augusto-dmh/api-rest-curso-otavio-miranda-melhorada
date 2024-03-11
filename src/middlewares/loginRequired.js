@@ -7,17 +7,17 @@ import * as errors from "../validation/errors/controllers";
 export default async (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization) {
-    throw new ErrorContext(new ApiError(...errors.missingAuthorization), {
-      function: "loginRequired",
-      file: "src/middlewares/loginRequired",
-      line: 10,
-    });
-  }
-
-  const [, token] = authorization.split(" ");
-
   try {
+    if (!authorization) {
+      throw new ErrorContext(new ApiError(...errors.missingAuthorization), {
+        function: "loginRequired",
+        file: "src/middlewares/loginRequired",
+        line: 10,
+      });
+    }
+
+    const [, token] = authorization.split(" ");
+
     const data = jwt.verify(token, process.env.TOKEN_SECRET);
     const { id, email } = data;
 
@@ -36,6 +36,6 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
-    next({ err });
+    next(err);
   }
 };
