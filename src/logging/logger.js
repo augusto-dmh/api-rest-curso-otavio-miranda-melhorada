@@ -17,7 +17,10 @@ const logger = pino(
       paths: ["email", "password"],
       censor: "[RESTRICTED]",
     },
-    timestamp: () => `",timestamp":"${new Date(Date.now()).toISOString()}"`,
+    timestamp:
+      process.env.NODE_ENV === "production"
+        ? () => `"timestamp":"${new Date(Date.now()).toISOString()}"`
+        : true,
     formatters: {
       level: (label) => ({ level: label.toUpperCase() }),
     },
