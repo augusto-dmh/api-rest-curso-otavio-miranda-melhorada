@@ -15,10 +15,24 @@ export const internalServerError = new Base(
 );
 
 export const missingAuthorization = new Base(
-  500,
+  401,
   "/errors/missing-authorization",
   "Missing Authorization",
   "'authorization' header is required.",
+);
+
+export const invalidAuthorization = new Base(
+  401,
+  "/errors/invalid-authorization",
+  "Invalid Authorization",
+  "'authorization' header is invalid.",
+);
+
+export const invalidToken = new Base(
+  401,
+  "/errors/invalid-token",
+  "Invalid Token",
+  "The provided token is invalid.",
 );
 
 export const missingId = new Base(

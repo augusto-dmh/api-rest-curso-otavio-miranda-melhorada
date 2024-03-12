@@ -8,8 +8,10 @@ export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   try {
-    if (!authorization) {
-      throw new ErrorContext(new ApiError(...errors.missingAuthorization), {
+    if (!authorization || !authorization.startsWith("Bearer ")) {
+      const errorBase = !authorization ? errors.missingAuthorization : errors.invalidAuthorization;
+
+      throw new ErrorContext(new ApiError(...errorBase), {
         function: "loginRequired",
         file: "src/middlewares/loginRequired",
         line: 10,
@@ -24,7 +26,7 @@ export default async (req, res, next) => {
     const user = await User.findOne({ where: { id, email } });
 
     if (!user) {
-      throw new ErrorContext(new ApiError(...errors.userNotFound), {
+      throw new ErrorContext(new ApiError(...errors.invalidToken), {
         function: "loginRequired",
         file: "src/middlewares/loginRequired",
         line: 24,
