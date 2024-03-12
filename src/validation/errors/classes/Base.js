@@ -9,8 +9,8 @@ class Base {
 
   *[Symbol.iterator]() {
     yield this.status;
-    yield this.title;
     yield this.type;
+    yield this.title;
     yield this.message;
     yield this.subErrors;
   }
