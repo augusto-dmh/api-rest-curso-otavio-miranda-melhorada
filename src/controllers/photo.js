@@ -14,6 +14,7 @@ const store = async (req, res, next) => {
       new ErrorContext(err, {
         function: "Photo.create",
         file: "src/controllers/photo.js",
+        path: "/photos",
         line: 8,
       }),
     );

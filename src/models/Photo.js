@@ -13,7 +13,7 @@ export default class Photo extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.originalname.empty.message;
+                throw errors.models.originalname.empty;
               }
             },
           },
@@ -24,7 +24,7 @@ export default class Photo extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.filename.empty.message;
+                throw errors.models.filename.empty;
               }
             },
           },

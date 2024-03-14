@@ -5,11 +5,14 @@ import ErrorContext from "../validation/errors/classes/ErrorContext";
 import * as errors from "../validation/errors/controllers";
 
 export default async (req, res, next) => {
+  const fullPath = req.baseUrl + req.path;
   const { authorization } = req.headers;
 
   try {
     if (!authorization || !authorization.startsWith("Bearer ")) {
-      const errorBase = !authorization ? errors.missingAuthorization : errors.invalidAuthorization;
+      const errorBase = !authorization
+        ? errors.createMissingAuthorization(fullPath)
+        : errors.createInvalidAuthorization(fullPath);
 
       throw new ErrorContext(new ApiError(...errorBase), {
         function: "loginRequired",

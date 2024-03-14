@@ -6,12 +6,14 @@ import ErrorContext from "../validation/errors/classes/ErrorContext";
 import User from "../models/User";
 
 const store = async (req, res, next) => {
+  const fullPath = req.baseUrl + req.path;
   const { email = "", password = "" } = req.body;
 
   if (!email || !password) {
-    throw new ErrorContext(new ApiError(...errors.controllers.missingCredentials), {
+    throw new ErrorContext(new ApiError(...errors.controllers.createMissingCredentials(fullPath)), {
       function: "tokenController.store",
       file: "src/controllers/token.js",
+      path: "/tokens",
       line: 9,
     });
   }
@@ -20,9 +22,10 @@ const store = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      throw new ErrorContext(new ApiError(...errors.controllers.invalidCredentials), {
+      throw new ErrorContext(new ApiError(...errors.controllers.createInvalidCredentials()), {
         function: "tokenController.store",
         file: "src/controllers/token.js",
+        path: "/tokens",
         line: 24,
       });
     }
@@ -33,9 +36,10 @@ const store = async (req, res, next) => {
     const passwordsMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordsMatch) {
-      throw new ErrorContext(new ApiError(...errors.controllers.passwordsNotMatch), {
+      throw new ErrorContext(new ApiError(...errors.controllers.createPasswordsNotMatch()), {
         function: "tokenController.store",
         file: "src/controllers/token.js",
+        path: "/tokens",
         line: 41,
       });
     }

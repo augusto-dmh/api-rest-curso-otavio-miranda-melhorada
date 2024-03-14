@@ -13,6 +13,7 @@ const store = async (req, res, next) => {
       new ErrorContext(err, {
         function: "User.create",
         file: "src/controllers/user.js",
+        path: "/users",
         line: 7,
       }),
     );
@@ -28,6 +29,7 @@ const index = async (req, res, next) => {
       new ErrorContext(err, {
         function: "User.findAll",
         file: "src/controllers/user.js",
+        path: "/users",
         line: 21,
       }),
     );
@@ -35,9 +37,20 @@ const index = async (req, res, next) => {
 };
 
 const show = async (req, res, next) => {
+  const fullPath = req.baseUrl + req.path;
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
     const user = await User.findByPk(id);
+
+    if (!user) {
+      throw new ErrorContext(new ApiError(...errors.controllers.createUserNotFound(id, fullPath)), {
+        function: "userController.show",
+        file: "src/controllers/user.js",
+        path: `/users/${id}`,
+        line: 45,
+      });
+    }
 
     const { name, email } = user;
     res.json({ id, name, email });
@@ -46,6 +59,7 @@ const show = async (req, res, next) => {
       new ErrorContext(err, {
         function: "User.findByPk",
         file: "src/controllers/user.js",
+        path: `/users/${id}`,
         line: 40,
       }),
     );
@@ -53,19 +67,20 @@ const show = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+  const id = req.userId;
+
   try {
-    const id = req.userId;
     const user = await User.findByPk(id);
 
     if (!user) {
-      next({
-        err: new ApiError(...errors.controllers.userNotFound),
-        source: {
+      next(
+        new ErrorContext(new ApiError(...errors.controllers.createUserNotFound(id)), {
           function: "userController.update",
           file: "src/controllers/user.js",
+          path: `/users/${id}`,
           line: 61,
-        },
-      });
+        }),
+      );
       return;
     }
 
@@ -79,16 +94,18 @@ const update = async (req, res, next) => {
 };
 
 const destroy = async (req, res, next) => {
+  const id = req.userId;
+
   try {
-    const id = req.userId;
     const user = await User.findByPk(id);
 
     if (!user) {
       next({
-        err: new ApiError(...errors.controllers.userNotFound),
+        err: new ApiError(...errors.controllers.createUserNotFound(id)),
         source: {
           function: "userController.destroy",
           file: "src/controllers/user.js",
+          path: `/users/${id}`,
           line: 87,
         },
       });

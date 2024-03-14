@@ -12,10 +12,10 @@ export default class Student extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.name.empty.message;
+                throw errors.models.name.empty;
               }
               if (!validations.isLengthValid(value, 3, 255)) {
-                throw errors.models.name.invalidLength.message;
+                throw errors.models.name.invalidLength;
               }
             },
           },
@@ -26,10 +26,10 @@ export default class Student extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.lastName.empty.message;
+                throw errors.models.lastName.empty;
               }
               if (!validations.isLengthValid(value, 3, 255)) {
-                throw errors.models.lastName.invalidLength.message;
+                throw errors.models.lastName.invalidLength;
               }
             },
           },
@@ -38,15 +38,15 @@ export default class Student extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
           unique: {
-            msg: errors.models.email.inUse.message,
+            msg: errors.models.email.inUse,
           },
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.email.empty.message;
+                throw errors.models.email.empty;
               }
               if (!validations.isEmailValid(value)) {
-                throw errors.models.email.invalid.message;
+                throw errors.models.email.invalid;
               }
             },
           },
@@ -57,10 +57,10 @@ export default class Student extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.age.empty.message;
+                throw errors.models.age.empty;
               }
               if (!validations.isInteger(value)) {
-                throw errors.models.age.nonInteger.message;
+                throw errors.models.age.nonInteger;
               }
             },
           },
@@ -71,10 +71,10 @@ export default class Student extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.weight.empty.message;
+                throw errors.models.weight.empty;
               }
               if (!validations.isNumber(value)) {
-                throw errors.models.weight.nonFloat.message;
+                throw errors.models.weight.nonFloat;
               }
             },
           },
@@ -85,10 +85,10 @@ export default class Student extends Model {
           validate: {
             custom(value) {
               if (!validations.isNotEmpty(value)) {
-                throw errors.models.height.empty.message;
+                throw errors.models.height.empty;
               }
               if (!validations.isNumber(value)) {
-                throw errors.models.height.nonFloat.message;
+                throw errors.models.height.nonFloat;
               }
             },
           },
