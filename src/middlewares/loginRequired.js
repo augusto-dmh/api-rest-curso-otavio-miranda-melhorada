@@ -12,7 +12,7 @@ export default async (req, res, next) => {
     if (!authorization || !authorization.startsWith("Bearer ")) {
       const errorBase = !authorization
         ? errors.createMissingAuthorization(fullPath)
-        : errors.createInvalidAuthorization(fullPath);
+        : errors.createInvalidAuthorizationFormat(fullPath);
 
       throw new ErrorContext(new ApiError(...errorBase), {
         function: "loginRequired",
@@ -25,7 +25,7 @@ export default async (req, res, next) => {
 
     const data = jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
       if (err) {
-        throw new ErrorContext(new ApiError(...errors.createInvalidAuthorization(fullPath)), {
+        throw new ErrorContext(new ApiError(...errors.createInvalidToken(fullPath)), {
           function: "loginRequired",
           file: "src/middlewares/loginRequired",
           line: 27,
@@ -37,7 +37,7 @@ export default async (req, res, next) => {
     const user = await User.findOne({ where: { id, email } });
 
     if (!user) {
-      throw new ErrorContext(new ApiError(...errors.createInvalidToken(fullPath)), {
+      throw new ErrorContext(new ApiError(...errors.createInvalidTokenDecodedPayload(fullPath)), {
         function: "loginRequired",
         file: "src/middlewares/loginRequired",
         line: 24,

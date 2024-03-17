@@ -31,13 +31,13 @@ export const createMissingAuthorization = (path) =>
     uuidv4(),
   );
 
-export const createInvalidAuthorization = (path) =>
+export const createInvalidAuthorizationFormat = (path) =>
   new Base(
     "/errors/authorization-failed",
-    "Invalid Authorization Header",
+    "Invalid Authorization Header Format",
     401,
-    "'authorization' header is invalid.",
-    `'authorization' header sent to ${path} is invalid due to incorrect format or token.`,
+    "'authorization' header format is invalid.",
+    `'authorization' header sent to ${path} is invalid due to incorrect format. Please provide it in "Bearer [Token]" format`,
     uuidv4(),
   );
 
@@ -46,8 +46,18 @@ export const createInvalidToken = (path) =>
     "/errors/authorization-failed",
     "Invalid Access Token",
     401,
-    "Access token is invalid. Please log in.",
-    `The access token provided on headers sent to ${path} is or has (expired) become invalid.`,
+    "The token is invalid.",
+    `The access token provided in headers sent to ${path} has been expired or tampered with.`,
+    uuidv4(),
+  );
+
+export const createInvalidTokenDecodedPayload = (path) =>
+  new Base(
+    "/errors/authorization-failed",
+    "Invalid Access Token Decoded Payload",
+    401,
+    "The token's decoded payload data is invalid",
+    `The access token provided in headers sent to ${path} has invalid data: the 'user' object decoded do not exists anymore.`,
     uuidv4(),
   );
 
