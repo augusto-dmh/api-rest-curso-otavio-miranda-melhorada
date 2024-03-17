@@ -37,7 +37,7 @@ export const createInvalidAuthorization = (path) =>
     "Invalid Authorization Header",
     401,
     "'authorization' header is invalid.",
-    `'authorization' header sent to ${path} is invalid due to incorrect format (!== Bearer [token]).`,
+    `'authorization' header sent to ${path} is invalid due to incorrect format or token.`,
     uuidv4(),
   );
 

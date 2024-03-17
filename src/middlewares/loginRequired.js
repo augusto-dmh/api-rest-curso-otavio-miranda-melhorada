@@ -23,13 +23,21 @@ export default async (req, res, next) => {
 
     const [, token] = authorization.split(" ");
 
-    const data = jwt.verify(token, process.env.TOKEN_SECRET);
+    const data = jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        throw new ErrorContext(new ApiError(...errors.createInvalidAuthorization(fullPath)), {
+          function: "loginRequired",
+          file: "src/middlewares/loginRequired",
+          line: 27,
+        });
+      }
+    });
     const { id, email } = data;
 
     const user = await User.findOne({ where: { id, email } });
 
     if (!user) {
-      throw new ErrorContext(new ApiError(...errors.invalidToken), {
+      throw new ErrorContext(new ApiError(...errors.createInvalidToken(fullPath)), {
         function: "loginRequired",
         file: "src/middlewares/loginRequired",
         line: 24,
