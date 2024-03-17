@@ -51,7 +51,15 @@ const store = async (req, res, next) => {
 
     res.json({ token, user: { name: user.name, id, email } });
   } catch (err) {
-    next(err);
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "tokenController.store",
+            file: "src/controllers/token.js",
+            path: "/tokens",
+          }),
+        );
   }
 };
 

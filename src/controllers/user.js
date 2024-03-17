@@ -9,14 +9,16 @@ const store = async (req, res, next) => {
     const { id, name, email } = newUser;
     res.json({ id, name, email });
   } catch (err) {
-    next(
-      new ErrorContext(err, {
-        function: "User.create",
-        file: "src/controllers/user.js",
-        path: "/users",
-        line: 7,
-      }),
-    );
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "User.create",
+            file: "src/controllers/user.js",
+            path: "/users",
+            line: 7,
+          }),
+        );
   }
 };
 
@@ -25,14 +27,16 @@ const index = async (req, res, next) => {
     const users = await User.findAll({ attributes: ["id", "name", "email"] });
     res.json(users);
   } catch (err) {
-    next(
-      new ErrorContext(err, {
-        function: "User.findAll",
-        file: "src/controllers/user.js",
-        path: "/users",
-        line: 21,
-      }),
-    );
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "User.findAll",
+            file: "src/controllers/user.js",
+            path: "/users",
+            line: 21,
+          }),
+        );
   }
 };
 
@@ -45,7 +49,7 @@ const show = async (req, res, next) => {
 
     if (!user) {
       throw new ErrorContext(new ApiError(...errors.controllers.createUserNotFound(id, fullPath)), {
-        function: "userController.show",
+        function: "User.findByPk",
         file: "src/controllers/user.js",
         path: `/users/${id}`,
         line: 45,
@@ -55,14 +59,16 @@ const show = async (req, res, next) => {
     const { name, email } = user;
     res.json({ id, name, email });
   } catch (err) {
-    next(
-      new ErrorContext(err, {
-        function: "User.findByPk",
-        file: "src/controllers/user.js",
-        path: `/users/${id}`,
-        line: 40,
-      }),
-    );
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "User.findByPk",
+            file: "src/controllers/user.js",
+            path: `/users/${id}`,
+            line: 40,
+          }),
+        );
   }
 };
 
@@ -89,7 +95,15 @@ const update = async (req, res, next) => {
 
     res.json({ id, name, email });
   } catch (err) {
-    next(err);
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "userController.update",
+            file: "src/controllers/user.js",
+            path: `/users/${id}`,
+          }),
+        );
   }
 };
 
@@ -115,7 +129,15 @@ const destroy = async (req, res, next) => {
     await user.destroy();
     res.json(null);
   } catch (err) {
-    next(err);
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "userController.destroy",
+            file: "src/controllers/user.js",
+            path: `/users/${id}`,
+          }),
+        );
   }
 };
 

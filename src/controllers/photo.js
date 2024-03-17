@@ -10,14 +10,16 @@ const store = async (req, res, next) => {
 
     res.json(photo);
   } catch (err) {
-    next(
-      new ErrorContext(err, {
-        function: "Photo.create",
-        file: "src/controllers/photo.js",
-        path: "/photos",
-        line: 8,
-      }),
-    );
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "Photo.create",
+            file: "src/controllers/photo.js",
+            path: "/photos",
+            line: 8,
+          }),
+        );
   }
 };
 

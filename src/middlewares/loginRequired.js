@@ -49,6 +49,15 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
-    next(err);
+    err instanceof ErrorContext
+      ? next(err)
+      : next(
+          new ErrorContext(err, {
+            function: "User.findOne",
+            file: "src/controllers/token.js",
+            path: fullPath,
+            line: 37,
+          }),
+        );
   }
 };

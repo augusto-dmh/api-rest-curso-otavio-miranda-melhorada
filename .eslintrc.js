@@ -35,5 +35,8 @@ module.exports = {
     "quote-props": "off",
     camelcase: "off",
     quotes: "off",
+    "no-unused-expressions": {
+      allowTernary: true,
+    },
   },
 };
