@@ -97,7 +97,7 @@ const show = async (req, res, next) => {
       : next(
           new ErrorContext(err, {
             function: "Student.findByPk",
-            file: "src/controllers/user.js",
+            file: "src/controllers/student.js",
             path: `/students/${id}`,
             line: 69,
           }),

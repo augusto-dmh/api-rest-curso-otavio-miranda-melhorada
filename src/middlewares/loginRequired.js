@@ -27,7 +27,7 @@ export default async (req, res, next) => {
       if (err) {
         throw new ErrorContext(new ApiError(...errors.createInvalidToken(fullPath)), {
           function: "loginRequired",
-          file: "src/middlewares/loginRequired",
+          file: "src/middlewares/loginRequired.js",
           line: 27,
         });
       }
@@ -40,7 +40,7 @@ export default async (req, res, next) => {
     if (!user) {
       throw new ErrorContext(new ApiError(...errors.createInvalidTokenDecodedPayload(fullPath)), {
         function: "loginRequired",
-        file: "src/middlewares/loginRequired",
+        file: "src/middlewares/loginRequired.js",
         line: 24,
       });
     }
@@ -55,7 +55,7 @@ export default async (req, res, next) => {
       : next(
           new ErrorContext(err, {
             function: "User.findOne",
-            file: "src/controllers/token.js",
+            file: "src/controllers/loginRequired.js",
             path: fullPath,
             line: 37,
           }),
