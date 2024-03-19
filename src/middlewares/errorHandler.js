@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { createUnexpectedError, createValidationError } from "../validation/errors/controllers";
 import ApiError from "../validation/errors/classes/ApiError";
 import logger from "../logging/logger";
+import LogError from "../validation/errors/classes/LogError";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
 export default ({ err, source }, req, res, next) => {
@@ -17,34 +18,38 @@ export default ({ err, source }, req, res, next) => {
     const validationError = createValidationError(fields.join(", "));
     validationError.subErrors = err.errors.map((error) => error.message);
 
-    logger.error({
-      status: validationError.status,
-      message: validationError.message,
-      source,
-      build_info: {
-        node_version: process.versions.node,
-        commitHash: execSync("git rev-parse HEAD").toString().trim(),
-      },
-      requestId: uuidv4(),
-      stack: err.stack,
-    });
+    logger.error(
+      new LogError(
+        validationError.status,
+        validationError.message,
+        source,
+        {
+          node_version: process.versions.node,
+          commitHash: execSync("git rev-parse HEAD").toString().trim(),
+        },
+        uuidv4(),
+        err.stack,
+      ),
+    );
 
     res.status(400).json({ error: validationError });
     return;
   }
 
   if (err instanceof ApiError) {
-    logger.error({
-      status: err.status,
-      detail: err.detail,
-      source,
-      build_info: {
-        node_version: process.versions.node,
-        commitHash: execSync("git rev-parse HEAD").toString().trim(),
-      },
-      request: err.requestId,
-      stack: err.stack,
-    });
+    logger.error(
+      new LogError(
+        err.status,
+        err.detail,
+        source,
+        {
+          node_version: process.versions.node,
+          commitHash: execSync("git rev-parse HEAD").toString().trim(),
+        },
+        uuidv4(),
+        err.stack,
+      ),
+    );
 
     const { type, title, status, message, requestId } = err;
     const apiError = { type, title, status, message, requestId };
@@ -53,16 +58,19 @@ export default ({ err, source }, req, res, next) => {
     return;
   }
 
-  logger.error({
-    status: err.status,
-    message: err.message,
-    source,
-    build_info: {
-      node_version: process.versions.node,
-      commitHash: execSync("git rev-parse HEAD").toString().trim(),
-    },
-    stack: err.stack,
-  });
+  logger.error(
+    new LogError(
+      err.status,
+      err.detail,
+      source,
+      {
+        node_version: process.versions.node,
+        commitHash: execSync("git rev-parse HEAD").toString().trim(),
+      },
+      uuidv4(),
+      err.stack,
+    ),
+  );
 
   res.status(500).json({
     error: createUnexpectedError(source.path),
