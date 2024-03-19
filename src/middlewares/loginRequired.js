@@ -31,6 +31,7 @@ export default async (req, res, next) => {
           line: 27,
         });
       }
+      return decoded;
     });
     const { id, email } = data;
 
