@@ -121,13 +121,13 @@ export const createUserNotFound = (id, path) =>
     uuidv4(),
   );
 
-export const createInvalidPhotoType = (type) =>
+export const createInvalidPhotoType = () =>
   new Base(
     "/errors/photo-invalid-type",
     "Invalid File Type",
     422,
     "File type not supported. Chose either PNG or JPG.",
-    `The file type ${type} is not supported. Only PNG or JPG format is accepted.`,
+    `The file type is not supported. Only PNG or JPG format is accepted.`,
     uuidv4(),
   );
 

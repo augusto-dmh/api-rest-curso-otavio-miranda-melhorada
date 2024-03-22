@@ -2,10 +2,12 @@ import { ValidationError } from "sequelize";
 import { createUnexpectedError, createValidationError } from "../validation/errors/controllers";
 import ApiError from "../validation/errors/classes/ApiError";
 import logHandler from "../logging/handler";
+import getSource from "../validation/errors/getSource";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
-export default ({ err, source }, req, res, next) => {
+export default ({ err, trace }, req, res, next) => {
   const { type, title, status, message, detail, requestId } = err;
+  const source = getSource(trace);
 
   if (err instanceof ValidationError) {
     const subErrors = [];

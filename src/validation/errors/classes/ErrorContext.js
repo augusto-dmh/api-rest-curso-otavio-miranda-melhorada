@@ -1,7 +1,7 @@
 class ErrorContext {
-  constructor(err, source) {
+  constructor(err, trace) {
     this.err = err;
-    this.source = source;
+    this.trace = trace;
   }
 }
 

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 import ApiError from "../validation/errors/classes/ApiError";
-import ErrorContext from "../validation/errors/classes/ErrorContext";
 import * as errors from "../validation/errors/controllers";
+import stacktrace from "stack-trace";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
 
 export default async (req, res, next) => {
   const fullPath = req.baseUrl + req.path;
@@ -14,51 +15,29 @@ export default async (req, res, next) => {
         ? errors.createMissingAuthorization(fullPath)
         : errors.createInvalidAuthorizationFormat(fullPath);
 
-      throw new ErrorContext(new ApiError(...errorBase), {
-        function: "loginRequired",
-        file: "src/middlewares/loginRequired",
-        line: 10,
-      });
+      throw new ApiError(...errorBase);
     }
 
     const [, token] = authorization.split(" ");
 
     const data = jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-      if (err) {
-        throw new ErrorContext(new ApiError(...errors.createInvalidToken(fullPath)), {
-          function: "loginRequired",
-          file: "src/middlewares/loginRequired.js",
-          line: 27,
-        });
-      }
+      if (err) throw new ApiError(...errors.createInvalidToken(fullPath));
       return decoded;
     });
     const { id, email } = data;
 
     const user = await User.findOne({ where: { id, email } });
 
-    if (!user) {
-      throw new ErrorContext(new ApiError(...errors.createInvalidTokenDecodedPayload(fullPath)), {
-        function: "loginRequired",
-        file: "src/middlewares/loginRequired.js",
-        line: 24,
-      });
-    }
+    if (!user) throw new ApiError(...errors.createInvalidTokenDecodedPayload(fullPath));
 
     req.userId = id;
     req.userEmail = email;
 
     return next();
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "User.findOne",
-            file: "src/controllers/loginRequired.js",
-            path: fullPath,
-            line: 37,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };

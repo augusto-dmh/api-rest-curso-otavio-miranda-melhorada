@@ -1,8 +1,9 @@
 import * as errors from "../validation/errors";
 import ApiError from "../validation/errors/classes/ApiError";
-import ErrorContext from "../validation/errors/classes/ErrorContext";
 import Student from "../models/Student";
 import Photo from "../models/Photo";
+import stacktrace from "stack-trace";
+import ErrorContext from "../validation/errors/classes/ErrorContext";
 
 const index = async (req, res, next) => {
   try {
@@ -20,16 +21,10 @@ const index = async (req, res, next) => {
 
     res.json(students);
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "Student.findAll",
-            file: "src/controllers/student.js",
-            path: "/students",
-            line: 7,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 
@@ -39,16 +34,10 @@ const store = async (req, res, next) => {
 
     res.json(student);
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "Student.create",
-            file: "src/controllers/student.js",
-            path: "/students",
-            line: 34,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 
@@ -57,14 +46,7 @@ const show = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    if (!id) {
-      throw new ErrorContext(new ApiError(...errors.controllers.createMissingId(fullPath)), {
-        function: "studentController.show",
-        file: "src/controllers/student.js",
-        path: `/students/${id}`,
-        line: 53,
-      });
-    }
+    if (!id) throw new ApiError(...errors.controllers.createMissingId(fullPath));
 
     const student = await Student.findByPk(id, {
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -78,30 +60,14 @@ const show = async (req, res, next) => {
       },
     });
 
-    if (!student) {
-      throw new ErrorContext(
-        new ApiError(...errors.controllers.createStudentNotFound(id, fullPath)),
-        {
-          function: "studentController.show",
-          file: "src/controllers/student.js",
-          path: `/students/${id}`,
-          line: 76,
-        },
-      );
-    }
+    if (!student) throw new ApiError(...errors.controllers.createStudentNotFound(id, fullPath));
 
     res.json(student);
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "Student.findByPk",
-            file: "src/controllers/student.js",
-            path: `/students/${id}`,
-            line: 69,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 
@@ -110,43 +76,19 @@ const destroy = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    if (!id) {
-      throw new ErrorContext(new ApiError(...errors.controllers.createMissingId(fullPath)), {
-        function: "studentController.destroy",
-        file: "src/controllers/student.js",
-        path: `/students/${id}`,
-        line: 106,
-      });
-    }
+    if (!id) throw new ApiError(...errors.controllers.createMissingId(fullPath));
 
     const student = await Student.findByPk(id);
 
-    if (!student) {
-      throw new ErrorContext(
-        new ApiError(...errors.controllers.createStudentNotFound(id, fullPath)),
-        {
-          function: "studentController.destroy",
-          file: "src/controllers/student.js",
-          path: `/students/${id}`,
-          line: 120,
-        },
-      );
-    }
+    if (!student) throw new ApiError(...errors.controllers.createStudentNotFound(id, fullPath));
 
     await student.destroy();
     res.json("Student successfully deleted");
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "studentController.destroy",
-            file: "src/controllers/student.js",
-            path: `/students${id}`,
-          }),
-        );
-    // all controllers methods with more than one place prone to throw an error
-    // - like this one: "Student.findByPk" and "student.destroy" - will not send "line" on "source" to the error-handler middleware.
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 
@@ -155,42 +97,20 @@ const update = async (req, res, next) => {
   const fullPath = req.baseUrl + req.path;
 
   try {
-    if (!id) {
-      throw new ErrorContext(new ApiError(...errors.controllers.createMissingId(fullPath)), {
-        function: "studentController.update",
-        file: "src/controllers/student.js",
-        path: `/students/${id}`,
-        line: 145,
-      });
-    }
+    if (!id) throw new ApiError(...errors.controllers.createMissingId(fullPath));
 
     const student = await Student.findByPk(id);
 
-    if (!student) {
-      throw new ErrorContext(
-        new ApiError(...errors.controllers.createStudentNotFound(id, fullPath)),
-        {
-          function: "studentController.update",
-          file: "src/controllers/student.js",
-          path: `/students/${id}`,
-          line: 159,
-        },
-      );
-    }
+    if (!student) throw new ApiError(...errors.controllers.createStudentNotFound(id, fullPath));
 
     const newStudent = await Student.update(req.body);
 
     res.json(newStudent);
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "studentController.update",
-            file: "src/controllers/student.js",
-            path: `/students${id}`,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 

@@ -1,4 +1,5 @@
 import Photo from "../models/Photo";
+import stacktrace from "stack-trace";
 import ErrorContext from "../validation/errors/classes/ErrorContext";
 
 const store = async (req, res, next) => {
@@ -10,16 +11,10 @@ const store = async (req, res, next) => {
 
     res.json(photo);
   } catch (err) {
-    err instanceof ErrorContext
-      ? next(err)
-      : next(
-          new ErrorContext(err, {
-            function: "Photo.create",
-            file: "src/controllers/photo.js",
-            path: "/photos",
-            line: 8,
-          }),
-        );
+    const trace = stacktrace.parse(err);
+    const errorContext = new ErrorContext(err, trace);
+
+    next(errorContext);
   }
 };
 
