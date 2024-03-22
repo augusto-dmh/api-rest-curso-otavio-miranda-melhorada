@@ -1,7 +1,7 @@
-class LogError {
-  constructor(status, message, source, build_info, requestId, stack) {
+class Log {
+  constructor(status, detail, source, build_info, requestId, stack) {
     this.status = status;
-    this.message = message;
+    this.detail = detail;
     this.source = source;
     this.build_info = build_info;
     this.requestId = requestId;
@@ -9,4 +9,4 @@ class LogError {
   }
 }
 
-export default LogError;
+export default Log;
