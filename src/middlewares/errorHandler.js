@@ -3,11 +3,12 @@ import { createUnexpectedError, createValidationError } from "../validation/erro
 import ApiError from "../validation/errors/classes/ApiError";
 import logHandler from "../logging/handler";
 import getSource from "../validation/errors/getSource";
+import Log from "../logging/log";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
 export default ({ err, trace }, req, res, next) => {
-  const { type, title, status, message, detail, requestId } = err;
   const source = getSource(trace);
+  const { status, detail } = err;
 
   if (err instanceof ValidationError) {
     const subErrors = [];
@@ -16,25 +17,25 @@ export default ({ err, trace }, req, res, next) => {
       subErrors.push(message);
       fields.push(path);
     });
-
     const validationError = createValidationError(fields.join(", "));
     validationError.subErrors = err.errors.map((error) => error.message);
     const { status, detail } = validationError;
 
-    logHandler({ status, detail, source }, err.stack, "error");
+    const log = new Log(status, detail, source, err.stack);
+    logHandler(log, "error");
+
     res.status(400).json({ error: validationError });
     return;
   }
 
-  if (err instanceof ApiError) {
-    const apiError = { type, title, status, message, requestId };
+  const log = new Log(status, detail, source, err.stack);
+  logHandler(log, "error");
 
-    logHandler({ status, detail, source }, err.stack, "error");
-    res.status(err.status).json({ error: apiError });
+  if (err instanceof ApiError) {
+    res.status(err.status).json({ error: { ...err, detail: undefined } }); // 'detail' must only be shown on logging.
     return;
   }
 
-  logHandler({ status, detail, source }, err.stack, "error");
   res.status(500).json({
     error: createUnexpectedError(source.path),
   });
