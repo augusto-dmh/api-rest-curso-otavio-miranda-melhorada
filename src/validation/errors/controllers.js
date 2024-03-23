@@ -11,13 +11,13 @@ export const createValidationError = (fields) =>
     uuidv4(),
   );
 
-export const createUnexpectedError = (path) =>
+export const createUnexpectedError = (file) =>
   new Base(
     "/errors/server-unexpected-error",
     "Unexpected Error on Server",
     500,
     "An unexpected error occurred on the server. Please try again later.",
-    `An unexpected error occurred on ${path} - related to database, external services etc.`,
+    `An unexpected error occurred on file ${file} - related to database, external services etc.`,
     uuidv4(),
   );
 

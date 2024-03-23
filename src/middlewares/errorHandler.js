@@ -37,6 +37,6 @@ export default ({ err, trace }, req, res, next) => {
   }
 
   res.status(500).json({
-    error: createUnexpectedError(source.path),
+    error: createUnexpectedError(source.fileName),
   });
 };
