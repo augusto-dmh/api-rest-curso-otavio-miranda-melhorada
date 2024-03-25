@@ -11,8 +11,7 @@ export const isEmailValid = (email) => {
   return schema.safeParse(email).success;
 };
 
-export const isEmailUnique = (email, Model) =>
-  !Model.findOne({ where: { email } });
+export const isEmailUnique = (email, Model) => !Model.findOne({ where: { email } });
 
 export const isNumber = (value) => {
   const schema = z.number();

@@ -5,3 +5,5 @@ dist
 package-lock.json
 src/uploads
 README.md
+uploads/images
+src/logging/log.log
