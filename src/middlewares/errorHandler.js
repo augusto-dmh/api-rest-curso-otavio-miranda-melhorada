@@ -2,12 +2,10 @@ import { ValidationError } from "sequelize";
 import { createUnexpectedError, createValidationError } from "../validation/errors/controllers";
 import ApiError from "../validation/errors/classes/ApiError";
 import logHandler from "../logging/handler";
-import getSource from "../validation/errors/getSource";
 import Log from "../logging/log";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
 export default ({ err, trace }, req, res, next) => {
-  const source = getSource(trace);
   const { status, detail } = err;
 
   if (err instanceof ValidationError) {
@@ -21,14 +19,14 @@ export default ({ err, trace }, req, res, next) => {
     validationError.subErrors = err.errors.map((error) => error.message);
     const { status, detail } = validationError;
 
-    const log = new Log(status, detail, source, err.stack);
+    const log = new Log(status, detail, trace, err.stack);
     logHandler(log, "error");
 
     res.status(400).json({ error: validationError });
     return;
   }
 
-  const log = new Log(status, detail, source, err.stack);
+  const log = new Log(status, detail, trace, err.stack);
   logHandler(log, "error");
 
   if (err instanceof ApiError) {
@@ -37,6 +35,6 @@ export default ({ err, trace }, req, res, next) => {
   }
 
   res.status(500).json({
-    error: createUnexpectedError(source.fileName),
+    error: createUnexpectedError(trace[0].getFileName()),
   });
 };
