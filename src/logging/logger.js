@@ -3,7 +3,7 @@ import pino from "pino";
 const transport = pino.transport({
   target: process.env.NODE_ENV === "production" ? "pino/file" : "pino-pretty",
   options: {
-    destination: `${__dirname}/log.log`,
+    destination: `${__dirname}/logs.log`,
     mkdir: true,
     colorize: process.env.NODE_ENV !== "production",
   },

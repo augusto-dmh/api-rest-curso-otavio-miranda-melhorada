@@ -2,7 +2,7 @@ import { ValidationError } from "sequelize";
 import { createUnexpectedError, createValidationError } from "../validation/errors/controllers";
 import ApiError from "../validation/errors/classes/ApiError";
 import logHandler from "../logging/handler";
-import Log from "../logging/log";
+import Log from "../logging/Log";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
 export default ({ err, trace }, req, res, next) => {

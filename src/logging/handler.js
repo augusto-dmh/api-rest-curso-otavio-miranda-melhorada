@@ -1,5 +1,5 @@
 import logger from "./logger";
-import Log from "./log";
+import Log from "./Log";
 import { execSync } from "child_process";
 import { v4 as uuidv4 } from "uuid";
 
