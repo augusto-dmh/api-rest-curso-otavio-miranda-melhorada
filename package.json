@@ -17,6 +17,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "devDependencies": {
     "eslint": "^8.48.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -37,7 +40,6 @@
     "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.2.0",
     "multer": "^1.4.5-lts.1",
-    "node": "^18.17.1",
     "pino": "^8.19.0",
     "sequelize": "^6.33.0",
     "stack-trace": "^0.0.10",
