@@ -11,85 +11,101 @@ export const createValidationError = (fields) =>
     uuidv4(),
   );
 
-export const createUnexpectedError = (file) =>
-  new Base(
+export const createUnexpectedError = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/server-unexpected-error",
     "Unexpected Error on Server",
     500,
     "An unexpected error occurred on the server. Please try again later.",
-    `An unexpected error occurred on file ${file} - related to database, external services etc.`,
+    `An unexpected error occurred on ${pathMatch[0]} - related to database, external services etc.`,
     uuidv4(),
   );
+};
 
-export const createMissingAuthorization = (path) =>
-  new Base(
+export const createMissingAuthorization = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/authorization-failed",
     "Missing Authorization Header",
     401,
     "'authorization' header is required.",
-    `'authorization' header is required to access resource from ${path}.`,
+    `'authorization' header is required to access resource from ${pathMatch[0]}.`,
     uuidv4(),
   );
+};
 
-export const createInvalidAuthorizationFormat = (path) =>
-  new Base(
+export const createInvalidAuthorizationFormat = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/authorization-failed",
     "Invalid Authorization Header Format",
     401,
     "'authorization' header format is invalid.",
-    `'authorization' header sent to ${path} is invalid due to incorrect format. Please provide it in "Bearer [Token]" format`,
+    `'authorization' header sent to ${pathMatch[0]} is invalid due to incorrect format. Please provide it in "Bearer [Token]" format`,
     uuidv4(),
   );
+};
 
-export const createInvalidToken = (path) =>
-  new Base(
+export const createInvalidToken = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/authorization-failed",
     "Invalid Access Token",
     401,
     "The token is invalid.",
-    `The access token provided in headers sent to ${path} has been expired or tampered with.`,
+    `The access token provided in headers sent to ${pathMatch[0]} has been expired or tampered with.`,
     uuidv4(),
   );
+};
 
-export const createInvalidTokenDecodedPayload = (path) =>
-  new Base(
+export const createInvalidTokenDecodedPayload = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/authorization-failed",
     "Invalid Access Token Decoded Payload",
     401,
     "The token's decoded payload data is invalid",
-    `The access token provided in headers sent to ${path} has invalid data: the 'user' object decoded do not exists anymore.`,
+    `The access token provided in headers sent to ${pathMatch[0]} has invalid data: the 'user' object decoded do not exists anymore.`,
     uuidv4(),
   );
+};
 
-export const createMissingId = (path) =>
-  new Base(
+export const createMissingId = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/id-param-missing",
     "Missing Id Parameter",
     400,
     "'id' parameter is required.",
-    `'id' parameter is required on ${path}. It's missing`,
+    `'id' parameter is required on ${pathMatch[0]}. It's missing`,
     uuidv4(),
   );
+};
 
-export const createStudentNotFound = (id, path) =>
-  new Base(
+export const createStudentNotFound = (id, path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/student-not-found",
     "Student Not Found",
     404,
     "No Student has been found.",
-    `Student ${id} has not been found on ${path}.`,
+    `Student ${id} has not been found on ${pathMatch[0]}.`,
     uuidv4(),
   );
+};
 
-export const createMissingCredentials = (path) =>
-  new Base(
+export const createMissingCredentials = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/login-credentials",
     "Missing Credentials",
     400,
     "'email' and 'password' are required fields.",
-    `'email' and 'password' are required on ${path}. One or both of them are missing,`,
+    `'email' and 'password' are required on ${pathMatch[0]}. One or both of them are missing,`,
     uuidv4(),
   );
+};
 
 export const createInvalidCredentials = () =>
   new Base(
@@ -111,15 +127,17 @@ export const createPasswordsNotMatch = () =>
     uuidv4(),
   );
 
-export const createUserNotFound = (id, path) =>
-  new Base(
+export const createUserNotFound = (id, path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/user-not-found",
     "User Not Found",
     404,
     "No user has been found.",
-    `User ${id} has not been found on ${path}.`,
+    `User ${id} has not been found on ${pathMatch[0]}.`,
     uuidv4(),
   );
+};
 
 export const createInvalidPhotoType = () =>
   new Base(
@@ -131,12 +149,14 @@ export const createInvalidPhotoType = () =>
     uuidv4(),
   );
 
-export const createInvalidPhotoSize = (path) =>
-  new Base(
+export const createInvalidPhotoSize = (path) => {
+  const pathMatch = path.match(/src(.*)/) || path.match(/node_modules.*$/);
+  return new Base(
     "/errors/photo-invalid-size",
     "Invalid Photo Size",
     422,
     "The photo exceeds the limit size (2MB).",
-    `The file size of ${path} ultrapasses 2MB. Please choose other image.`,
+    `The file size of ${pathMatch[0]} ultrapasses 2MB. Please choose other image.`,
     uuidv4(),
   );
+};
