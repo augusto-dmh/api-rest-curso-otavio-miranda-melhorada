@@ -6,8 +6,6 @@ import Log from "../logging/Log";
 
 /* eslint-disable no-unused-vars */ // error-handling middleware demands "next" to work.
 export default ({ err, trace }, req, res, next) => {
-  const { status, detail } = err;
-
   if (err instanceof ValidationError) {
     const subErrors = [];
     const fields = [];
@@ -26,14 +24,19 @@ export default ({ err, trace }, req, res, next) => {
     return;
   }
 
-  const log = new Log(status, detail, trace, err.stack);
-  logHandler(log, "error");
-
   if (err instanceof ApiError) {
+    const { status, detail } = err;
+    const log = new Log(status, detail, trace, err.stack);
+    logHandler(log, "error");
+
     res.status(err.status).json({ error: { ...err, detail: undefined } });
     return;
   }
 
   const unexpectedError = createUnexpectedError(trace[0].getFileName());
+  const { status, detail } = unexpectedError;
+  const log = new Log(status, detail, trace, err.stack);
+  logHandler(log, "error");
+
   res.status(500).json({ error: { ...unexpectedError, detail: undefined } });
 };
