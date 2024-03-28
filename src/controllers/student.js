@@ -4,21 +4,38 @@ import Student from "../models/Student";
 import Photo from "../models/Photo";
 import stacktrace from "stack-trace";
 import ErrorContext from "../validation/errors/classes/ErrorContext";
+import { Op } from "sequelize";
 
 const index = async (req, res, next) => {
-  try {
-    const students = await Student.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      order: [
-        ["id", "DESC"],
-        [Photo, "id", "DESC"],
-      ],
-      include: {
-        model: Photo,
-        attributes: ["url", "filename"],
-      },
-    });
+  const [cursor, pageSize] = [Number(req.query.cursor), Number(req.query.pageSize)];
+  const queryBase = {
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+    order: [
+      ["id", "DESC"],
+      [Photo, "id", "DESC"],
+    ],
+    include: {
+      model: Photo,
+      attributes: ["url", "filename"],
+    },
+  };
 
+  try {
+    if (cursor && pageSize) {
+      const students = await Student.findAll({
+        ...queryBase,
+        where: {
+          id: {
+            [Op.lte]: cursor,
+          },
+        },
+        limit: pageSize + 1,
+      });
+      res.json({ students, next_cursor: students[students.length - 1].id });
+      return;
+    }
+
+    const students = await Student.findAll(queryBase);
     res.json(students);
   } catch (err) {
     const trace = stacktrace.parse(err);
