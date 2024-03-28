@@ -22,7 +22,7 @@ export default ({ err, trace }, req, res, next) => {
     const log = new Log(status, detail, trace, err.stack);
     logHandler(log, "error");
 
-    res.status(400).json({ error: validationError });
+    res.status(400).json({ error: { ...validationError, detail: undefined } });
     return;
   }
 
@@ -30,11 +30,10 @@ export default ({ err, trace }, req, res, next) => {
   logHandler(log, "error");
 
   if (err instanceof ApiError) {
-    res.status(err.status).json({ error: { ...err, detail: undefined } }); // 'detail' must only be shown on logging.
+    res.status(err.status).json({ error: { ...err, detail: undefined } });
     return;
   }
 
-  res.status(500).json({
-    error: createUnexpectedError(trace[0].getFileName()),
-  });
+  const unexpectedError = createUnexpectedError(trace[0].getFileName());
+  res.status(500).json({ error: { ...unexpectedError, detail: undefined } });
 };
