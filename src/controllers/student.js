@@ -5,13 +5,16 @@ import Photo from "../models/Photo";
 import stacktrace from "stack-trace";
 import ErrorContext from "../validation/errors/classes/ErrorContext";
 import { Op } from "sequelize";
+import { get } from "lodash";
 
 const index = async (req, res, next) => {
-  const [cursor, pageSize] = [Number(req.query.cursor), Number(req.query.pageSize)];
+  const { cursor, page_size } = req.query;
+  const sort_by = get(req.query, "sort_by", "id.desc").split(".");
+
   const queryBase = {
     attributes: { exclude: ["createdAt", "updatedAt"] },
     order: [
-      ["id", "DESC"],
+      [sort_by[0], sort_by[1]],
       [Photo, "id", "DESC"],
     ],
     include: {
@@ -20,23 +23,19 @@ const index = async (req, res, next) => {
     },
   };
 
-  try {
-    if (cursor && pageSize) {
-      const students = await Student.findAll({
-        ...queryBase,
-        where: {
-          id: {
-            [Op.lte]: cursor,
-          },
-        },
-        limit: pageSize + 1,
-      });
-      res.json({ students, next_cursor: students[students.length - 1].id });
-      return;
-    }
+  if (cursor && page_size) {
+    queryBase.where = {
+      id: { [Op.lte]: Number(cursor) },
+    };
+    queryBase.limit = Number(page_size) + 1;
+  }
 
+  try {
     const students = await Student.findAll(queryBase);
-    res.json(students);
+
+    cursor && page_size
+      ? res.json({ students, next_cursor: students[students.length - 1].id })
+      : res.json(students);
   } catch (err) {
     const trace = stacktrace.parse(err);
     const errorContext = new ErrorContext(err, trace);
