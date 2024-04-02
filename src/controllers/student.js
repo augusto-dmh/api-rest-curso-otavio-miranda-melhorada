@@ -6,17 +6,16 @@ import stacktrace from "stack-trace";
 import ErrorContext from "../validation/errors/classes/ErrorContext";
 import { Op } from "sequelize";
 import { get } from "lodash";
+import queryString from "query-string";
 
 const index = async (req, res, next) => {
-  const { cursor, page_size } = req.query;
-  const sort_by = get(req.query, "sort_by", "id.desc").split(".");
+  const qs = queryString.parse(req.originalUrl.split("?")[1], { arrayFormat: "comma" });
+  const { cursor, page_size } = qs;
+  const sort_by = get(qs, "sort_by", ["id.desc"]);
 
   const queryBase = {
     attributes: { exclude: ["createdAt", "updatedAt"] },
-    order: [
-      [sort_by[0], sort_by[1]],
-      [Photo, "id", "DESC"],
-    ],
+    order: [...parseSortBy(sort_by), [Photo, "id", "DESC"]],
     include: {
       model: Photo,
       attributes: ["url", "filename"],
@@ -129,5 +128,12 @@ const update = async (req, res, next) => {
     next(errorContext);
   }
 };
+
+function parseSortBy(sort_by) {
+  return sort_by.map((sB) => {
+    const sbParsed = sB.split(".");
+    return [sbParsed[0], sbParsed[1]];
+  });
+}
 
 export default { index, store, show, destroy, update };
